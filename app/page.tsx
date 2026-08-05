@@ -55,8 +55,7 @@ export default function Home() {
         <h3 className="text-4xl font-bold mb-10">
           Why STEM Forge?
         </h3>
-
-
+        
         <div className="grid gap-6 md:grid-cols-3">
 
 
@@ -91,12 +90,53 @@ export default function Home() {
               Showcase achievements and research.
             </p>
           </div>
+          </div>
 
+        <section className="px-6 mt-32">
+          <h3 className="text-4xl font-bold mb-10">
+            How STEM Forge Works
+          </h3>
 
-        </div>
+          <div className="grid gap-6 md:grid-cols-4">
+            <div className="bg-[#161D22] p-6 rounded-2xl border border-gray-800">
+              <h4 className="font-bold text-xl">
+                01. Create Profile
+              </h4>
+              <p className="text-gray-400 mt-3">
+                Share your skills, interests and goals.
+              </p>
+            </div>
 
-      </section>
+            <div className="bg-[#161B22] p-6 rounded-2xl border border-gray-800">
+              <h4 className="font-bold text-xl">
+                02. Find Teammates
+              </h4>
+                <p className="text-gray-400 mt-3">
+                Connect with ambitious students worldwide.
+              </p>
+            </div>
+
+            <div className="bg-[#161D22] p-6 rounded-2xl border border-gray-800">
+              <h4 className="font-bold text-xl">
+                03. Build projects
+              </h4>
+              <p className="text-gray-400 mt-3">
+                Create STEM projects and research together.
+              </p>
+              </div>
+
+            <div className="bg-[#161D22] p-6 rounded-2xl border border-gray-800">
+              <h4 className="font-bold text-xl">
+                04. Show Work
+              </h4>
+              <p className="text-gray-400 mt-3">
+                Build your portfolio and achievements.
+              </p>
+            </div>
+            </div>
+        </section>
+        </section>
 
     </main>
-  );
+  )
 }
