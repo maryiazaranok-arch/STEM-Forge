@@ -19,11 +19,9 @@ export default function Home() {
           Find Your Team.
           <br />
 
-        <span className="bg-gradient-to-r from-violet-400 via-purple-500 to-blue-500 bg-clip-text text-transparent">
-        Build The Future.
-        </span>
-        
-
+          <span className="bg-gradient-to-r from-violet-400 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+            Build The Future.
+          </span>
 
         </h2>
 
@@ -55,11 +53,13 @@ export default function Home() {
         <h3 className="text-4xl font-bold mb-10">
           Why STEM Forge?
         </h3>
-        
+
+
         <div className="grid gap-6 md:grid-cols-3">
 
 
-          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800 hover:-translate-y-1 transition">
+
             <h4 className="font-bold text-xl">
               Find Teammates
             </h4>
@@ -67,10 +67,12 @@ export default function Home() {
             <p className="text-gray-400 mt-3">
               Connect with students who share your interests.
             </p>
+
           </div>
 
 
-          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800 hover:-translate-y-1 transition">
+
             <h4 className="font-bold text-xl">
               Build Projects
             </h4>
@@ -78,10 +80,12 @@ export default function Home() {
             <p className="text-gray-400 mt-3">
               Launch STEM projects and research initiatives.
             </p>
+
           </div>
 
 
-          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800 hover:-translate-y-1 transition">
+
             <h4 className="font-bold text-xl">
               Grow Portfolio
             </h4>
@@ -89,54 +93,176 @@ export default function Home() {
             <p className="text-gray-400 mt-3">
               Showcase achievements and research.
             </p>
-          </div>
+
           </div>
 
-        <section className="px-6 mt-32">
-          <h3 className="text-4xl font-bold mb-10">
-            How STEM Forge Works
+
+        </div>
+
+      </section>
+
+
+      <section className="px-6 mt-32">
+
+
+        <h3 className="text-4xl font-bold mb-10">
+          How STEM Forge Works
+        </h3>
+
+
+        <div className="grid gap-6 md:grid-cols-4">
+
+
+          <div className="bg-[#161B22] p-6 rounded-2xl border border-gray-800 hover:-translate-y-1 transition">
+
+            <h4 className="font-bold text-xl">
+              01. Create Profile
+            </h4>
+
+            <p className="text-gray-400 mt-3">
+              Share your skills, interests and goals.
+            </p>
+
+          </div>
+
+
+
+          <div className="bg-[#161B22] p-6 rounded-2xl border border-gray-800 hover:-translate-y-1 transition">
+
+            <h4 className="font-bold text-xl">
+              02. Find Teammates
+            </h4>
+
+            <p className="text-gray-400 mt-3">
+              Connect with ambitious students worldwide.
+            </p>
+
+          </div>
+
+
+
+          <div className="bg-[#161B22] p-6 rounded-2xl border border-gray-800 hover:-translate-y-1 transition">
+
+            <h4 className="font-bold text-xl">
+              03. Build Projects
+            </h4>
+
+            <p className="text-gray-400 mt-3">
+              Create STEM projects and research together.
+            </p>
+
+          </div>
+
+
+
+          <div className="bg-[#161B22] p-6 rounded-2xl border border-gray-800 hover:-translate-y-1 transition">
+
+            <h4 className="font-bold text-xl">
+              04. Showcase Work
+            </h4>
+
+            <p className="text-gray-400 mt-3">
+              Build your portfolio and achievements.
+            </p>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <section className="px-6 mt-32">
+
+
+        <div className="max-w-3xl">
+
+          <h3 className="text-4xl font-bold">
+            Built for ambitious STEM students
           </h3>
 
-          <div className="grid gap-6 md:grid-cols-4">
-            <div className="bg-[#161D22] p-6 rounded-2xl border border-gray-800">
-              <h4 className="font-bold text-xl">
-                01. Create Profile
-              </h4>
-              <p className="text-gray-400 mt-3">
-                Share your skills, interests and goals.
-              </p>
-            </div>
 
-            <div className="bg-[#161B22] p-6 rounded-2xl border border-gray-800">
-              <h4 className="font-bold text-xl">
-                02. Find Teammates
-              </h4>
-                <p className="text-gray-400 mt-3">
-                Connect with ambitious students worldwide.
-              </p>
-            </div>
+          <p className="text-gray-400 text-lg mt-5">
+            STEM Forge brings together students who want to
+            collaborate, research and build the future together.
+          </p>
 
-            <div className="bg-[#161D22] p-6 rounded-2xl border border-gray-800">
-              <h4 className="font-bold text-xl">
-                03. Build projects
-              </h4>
-              <p className="text-gray-400 mt-3">
-                Create STEM projects and research together.
-              </p>
-              </div>
+        </div>
 
-            <div className="bg-[#161D22] p-6 rounded-2xl border border-gray-800">
-              <h4 className="font-bold text-xl">
-                04. Show Work
-              </h4>
-              <p className="text-gray-400 mt-3">
-                Build your portfolio and achievements.
-              </p>
-            </div>
-            </div>
-        </section>
-        </section>
+
+        <div className="grid gap-6 md:grid-cols-2 mt-12">
+
+
+          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+            <h4 className="text-2xl font-bold">
+              🎓 Students
+            </h4>
+
+            <p className="text-gray-400 mt-3">
+              Find teammates and build ambitious STEM projects.
+            </p>
+          </div>
+
+
+
+          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+            <h4 className="text-2xl font-bold">
+              🔬 Researchers
+            </h4>
+
+            <p className="text-gray-400 mt-3">
+              Collaborate on research ideas and discoveries.
+            </p>
+          </div>
+
+
+
+          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+            <h4 className="text-2xl font-bold">
+              🚀 Young Founders
+            </h4>
+
+            <p className="text-gray-400 mt-3">
+              Turn innovative ideas into real projects.
+            </p>
+          </div>
+
+
+
+          <div className="bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+            <h4 className="text-2xl font-bold">
+              🏆 Olympiad Students
+            </h4>
+
+            <p className="text-gray-400 mt-3">
+              Meet students with similar goals.
+            </p>
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+
+
+      <footer className="px-6 mt-32 py-10 border-t border-gray-800">
+
+        <h2 className="font-bold text-xl">
+          STEM Forge
+        </h2>
+
+
+        <p className="text-gray-400 mt-3">
+          Building the future of student collaboration.
+        </p>
+
+      </footer>
+
 
     </main>
-  )
+  );
 }
