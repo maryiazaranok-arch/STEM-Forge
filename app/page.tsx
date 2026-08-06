@@ -1,16 +1,21 @@
+import Link from 'next/link';
+
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#0D1117] text-white">
 
-      <nav className="p-6 flex justify-between items-center">
+      <div className="p-6 flex justify-between items-center">
         <h1 className="font-bold text-xl">
           STEM Forge
         </h1>
 
+      <Link href="/register">
         <button className="bg-[#8B5CF6] px-5 py-2 rounded-lg hover:bg-purple-700 transition">
-          Sign Up
+        Sign Up
         </button>
-      </nav>
+      </Link>
+      </div>
 
 
       <section className="px-6 pt-24 max-w-5xl">
