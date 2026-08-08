@@ -6,17 +6,31 @@ export default function Home() {
     <main className="min-h-screen bg-[#0D1117] text-white">
 
       <div className="p-6 flex justify-between items-center">
+
         <h1 className="font-bold text-xl">
           STEM Forge
         </h1>
 
-      <Link href="/register">
-        <button className="bg-[#8B5CF6] px-5 py-2 rounded-lg hover:bg-purple-700 transition">
-        Sign Up
-        </button>
-      </Link>
-      </div>
+        <div className="flex items-center gap-3">
 
+          <Link
+            href="/login"
+            className="border border-gray-700 px-5 py-2 rounded-lg hover:bg-gray-800 transition"
+          >
+            Login
+          </Link>
+
+          <Link
+            href="/register"
+            className="bg-[#8B5CF6] px-5 py-2 rounded-lg hover:bg-purple-700 transition"
+          >
+            Sign Up
+          </Link>
+
+        </div>
+
+      </div>
+      
 
       <section className="px-6 pt-24 max-w-5xl">
 
@@ -39,9 +53,12 @@ export default function Home() {
 
         <div className="mt-8 flex gap-4">
 
-          <button className="bg-[#794ae9] px-7 py-3 rounded-xl hover:scale-105 transition">
+          <Link
+            href="/register"
+            className="bg-[#794ae9] px-7 py-3 rounded-xl hover:scale-105 transition"
+          >
             Get Started
-          </button>
+          </Link>
 
 
           <button className="border border-gray-700 px-7 py-3 rounded-xl hover:bg-gray-800 transition">
