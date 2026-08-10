@@ -1,4 +1,11 @@
 import Link from 'next/link';
+import { IBM_Plex_Sans } from "next/font/google";
+
+export const logoFont = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["700"],
+});
+
 
 
 export default function Home() {
@@ -7,7 +14,7 @@ export default function Home() {
 
       <div className="p-6 flex justify-between items-center">
 
-        <h1 className="font-bold text-xl">
+        <h1 className={`${logoFont.className} text-3xl`}>
           STEM Forge
         </h1>
 

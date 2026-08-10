@@ -2,13 +2,37 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { IBM_Plex_Sans } from "next/font/google";
+
+const skillOptions = [
+  "Programming",
+  "Mathematics",
+  "Physics",
+  "Biology",
+  "Chemistry",
+  "Research",
+  "Engineering",
+  "Artificial Intelligence",
+  "Robotics",
+  "Data Science",
+  "Entrepreneurship",
+  "Design",
+  "Public Speaking",
+  "Leadership",
+];
+
+export const logoFont = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["700"],
+});
+
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null);
 
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  const [skills, setSkills] = useState("");
+  const [skills, setSkills] = useState<string[]>([]);
   const [interests, setInterests] = useState("");
   const [goals, setGoals] = useState("");
 
@@ -24,6 +48,14 @@ export default function ProfilePage() {
     setUser(user);
   }
 
+  function toggleSkill(skill: string) {
+  if (skills.includes(skill)) {
+    setSkills(skills.filter((item) => item !== skill));
+  } else {
+    setSkills([...skills, skill]);
+  }
+}
+
   async function saveProfile() {
     if (!user) return;
 
@@ -33,7 +65,7 @@ export default function ProfilePage() {
         id: user.id,
         full_name: name,
         bio: bio,
-        skills: skills ? skills.split(",") : [],
+        skills: skills,
         interests: interests ? interests.split(",") : [],
         goals: goals ? goals.split(",") : [],
       });
@@ -51,10 +83,11 @@ export default function ProfilePage() {
 
       <div className="max-w-2xl mx-auto">
 
-        <div className="mb-8">
-          <p className="text-purple-400 text-sm mb-2">
-            STEM FORGE
-          </p>
+        <div className="mb-8">           
+          <h1
+            className={`${logoFont.className} text-2xl font-bold tracking-tight bg-linear-to-r from-violet-500/70 to-blue-500/70 bg-clip-text text-transparent`}>
+            STEM Forge
+          </h1>
 
           <h1 className="text-4xl font-bold">
             My Profile
@@ -114,20 +147,31 @@ export default function ProfilePage() {
           </div>
 
 
-          <div className="mb-6">
+          <div className="mb-8">
 
-            <label className="block text-sm text-gray-400 mb-2">
-              Skills
-            </label>
+  <label className="block text-sm text-gray-400 mb-3">
+    Skills
+  </label>
 
-            <input
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              placeholder="Programming, Physics, Biology"
-              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
-            />
+  <div className="flex flex-wrap gap-3">
 
-          </div>
+    {skillOptions.map((skill) => (
+      <button
+        key={skill}
+        type="button"
+        onClick={() => toggleSkill(skill)}
+        className={`px-4 py-2 rounded-full border transition ${
+        skills.includes(skill)
+          ? "bg-gradient-to-r from-violet-500/70 to-blue-500/70 border-violet-400/50 text-white"
+          : "border-gray-700 text-gray-300 hover:border-purple-500"
+          }`} >
+          {skill}
+        </button>
+      ))}
+
+    </div>
+
+  </div>
 
 
           <div className="mb-6">
