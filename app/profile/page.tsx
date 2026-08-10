@@ -43,76 +43,133 @@ export default function ProfilePage() {
       return;
     }
 
-    alert("Saved!");
+    alert("Profile saved!");
   }
 
   return (
-    <main className="min-h-screen bg-[#0D1117] text-white p-8">
+    <main className="min-h-screen bg-[#0D1117] text-white px-6 py-12">
 
-      <h1 className="text-3xl font-bold">
-        My Profile
-      </h1>
+      <div className="max-w-2xl mx-auto">
 
-      <p className="mt-4">
-        Email: {user?.email}
-      </p>
+        <div className="mb-8">
+          <p className="text-purple-400 text-sm mb-2">
+            STEM FORGE
+          </p>
 
-      <div className="mt-8 max-w-md">
+          <h1 className="text-4xl font-bold">
+            My Profile
+          </h1>
 
-        <p>Name</p>
-
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 mt-1 mb-4 text-black"
-        />
+          <p className="text-gray-400 mt-2">
+            Tell the community about yourself.
+          </p>
+        </div>
 
 
-        <p>About me</p>
+        <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-8">
 
-        <textarea
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          className="w-full p-2 mt-1 mb-4 text-black"
-        />
+          <div className="mb-6">
 
+            <p className="text-sm text-gray-500">
+              ACCOUNT
+            </p>
 
-        <p>Skills</p>
+            <p className="mt-2 text-gray-300">
+              {user?.email}
+            </p>
 
-        <input
-          placeholder="Programming, Physics, Biology"
-          value={skills}
-          onChange={(e) => setSkills(e.target.value)}
-          className="w-full p-2 mt-1 mb-4 text-black"
-        />
+          </div>
 
 
-        <p>Interests</p>
+          <div className="mb-6">
 
-        <input
-          placeholder="AI, Space, Robotics"
-          value={interests}
-          onChange={(e) => setInterests(e.target.value)}
-          className="w-full p-2 mt-1 mb-4 text-black"
-        />
+            <label className="block text-sm text-gray-400 mb-2">
+              Full Name
+            </label>
 
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
+            />
 
-        <p>Goals</p>
-
-        <input
-          placeholder="Find teammates, research"
-          value={goals}
-          onChange={(e) => setGoals(e.target.value)}
-          className="w-full p-2 mt-1 mb-4 text-black"
-        />
+          </div>
 
 
-        <button
-          onClick={saveProfile}
-          className="bg-purple-600 px-5 py-2"
-        >
-          Save
-        </button>
+          <div className="mb-6">
+
+            <label className="block text-sm text-gray-400 mb-2">
+              About Me
+            </label>
+
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder="Tell other students about yourself..."
+              rows={4}
+              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
+            />
+
+          </div>
+
+
+          <div className="mb-6">
+
+            <label className="block text-sm text-gray-400 mb-2">
+              Skills
+            </label>
+
+            <input
+              value={skills}
+              onChange={(e) => setSkills(e.target.value)}
+              placeholder="Programming, Physics, Biology"
+              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
+            />
+
+          </div>
+
+
+          <div className="mb-6">
+
+            <label className="block text-sm text-gray-400 mb-2">
+              Interests
+            </label>
+
+            <input
+              value={interests}
+              onChange={(e) => setInterests(e.target.value)}
+              placeholder="AI, Space, Robotics"
+              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
+            />
+
+          </div>
+
+
+          <div className="mb-8">
+
+            <label className="block text-sm text-gray-400 mb-2">
+              Goals
+            </label>
+
+            <input
+              value={goals}
+              onChange={(e) => setGoals(e.target.value)}
+              placeholder="Find teammates, research..."
+              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
+            />
+
+          </div>
+
+
+          <button
+            onClick={saveProfile}
+            className="w-full bg-[#8B5CF6] py-3 rounded-lg hover:bg-purple-700 transition"
+          >
+            Save Profile
+          </button>
+
+        </div>
 
       </div>
 
