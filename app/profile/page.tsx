@@ -4,6 +4,17 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { IBM_Plex_Sans } from "next/font/google";
 
+const goalOptions = [
+  "Find Teammates",
+  "Build a Project",
+  "Join a Project",
+  "Conduct Research",
+  "Find a Mentor",
+  "Start a Startup",
+  "Participate in Competitions",
+  "Build a Portfolio",
+];
+
 const skillOptions = [
   "Programming",
   "Mathematics",
@@ -34,7 +45,7 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
   const [interests, setInterests] = useState("");
-  const [goals, setGoals] = useState("");
+  const [goals, setGoals] = useState<string[]>([]);
 
   useEffect(() => {
     getUser();
@@ -47,6 +58,14 @@ export default function ProfilePage() {
 
     setUser(user);
   }
+
+  function toggleGoal(goal: string) {
+  if (goals.includes(goal)) {
+    setGoals(goals.filter((item) => item !== goal));
+  } else {
+    setGoals([...goals, goal]);
+  }
+}
 
   function toggleSkill(skill: string) {
   if (skills.includes(skill)) {
@@ -66,8 +85,10 @@ export default function ProfilePage() {
         full_name: name,
         bio: bio,
         skills: skills,
-        interests: interests ? interests.split(",") : [],
-        goals: goals ? goals.split(",") : [],
+        interests: interests
+        ? interests.split(",").map((item) => item.trim())
+        : [],
+        goals: goals,
       });
 
     if (error) {
@@ -174,36 +195,53 @@ export default function ProfilePage() {
   </div>
 
 
-          <div className="mb-6">
+          <div className="mb-8">
 
             <label className="block text-sm text-gray-400 mb-2">
               Interests
             </label>
 
-            <input
-              value={interests}
-              onChange={(e) => setInterests(e.target.value)}
-              placeholder="AI, Space, Robotics"
-              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
-            />
+          <textarea
+            value={interests}
+            onChange={(e) => setInterests(e.target.value)}
+            placeholder="Tell us what you're interested in..."
+            rows={3}
+            className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500 resize-none"
+          />
 
-          </div>
+          <p className="text-gray-500 text-sm mt-2">
+            You can write anything — from space exploration to cancer research.
+          </p>
+
+        </div>
 
 
           <div className="mb-8">
 
-            <label className="block text-sm text-gray-400 mb-2">
-              Goals
-            </label>
+  <label className="block text-sm text-gray-400 mb-3">
+    Goals
+  </label>
 
-            <input
-              value={goals}
-              onChange={(e) => setGoals(e.target.value)}
-              placeholder="Find teammates, research..."
-              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
-            />
+  <div className="flex flex-wrap gap-3">
 
-          </div>
+    {goalOptions.map((goal) => (
+      <button
+        key={goal}
+        type="button"
+        onClick={() => toggleGoal(goal)}
+        className={`px-4 py-2 rounded-full border transition ${
+          goals.includes(goal)
+            ? "bg-gradient-to-r from-violet-500/50 to-blue-500/50 border-violet-400/40 text-white"
+            : "border-gray-700 text-gray-300 hover:border-purple-500"
+        }`}
+      >
+        {goal}
+      </button>
+    ))}
+
+    </div>
+
+  </div>
 
 
           <button
