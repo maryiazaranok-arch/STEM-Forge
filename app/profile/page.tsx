@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { IBM_Plex_Sans } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 const goalOptions = [
   "Find Teammates",
@@ -46,6 +47,7 @@ export default function ProfilePage() {
   const [skills, setSkills] = useState<string[]>([]);
   const [interests, setInterests] = useState("");
   const [goals, setGoals] = useState<string[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     getUser();
@@ -79,25 +81,25 @@ export default function ProfilePage() {
     if (!user) return;
 
     const { error } = await supabase
-      .from("profiles")
-      .upsert({
-        id: user.id,
-        full_name: name,
-        bio: bio,
-        skills: skills,
-        interests: interests
-        ? interests.split(",").map((item) => item.trim())
-        : [],
-        goals: goals,
-      });
+    .from("profiles")
+    .upsert({
+      id: user.id,
+      full_name: name,
+      skills: skills,
+      interests: interests
+      ? interests.split(",").map((item) => item.trim())
+      : [],
+    goals: goals,
+    });
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    alert("Profile saved!");
+  if (error) {
+  console.error(error);
+  return;
   }
+
+  alert("Profile saved!");
+
+  router.push("/dashboard");}
 
   return (
     <main className="min-h-screen bg-[#0D1117] text-white px-6 py-12">
