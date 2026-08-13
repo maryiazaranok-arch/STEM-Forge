@@ -50,16 +50,41 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
-    getUser();
+    getUserAndProfile();
   }, []);
 
-  async function getUser() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  async function getUserAndProfile() {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    setUser(user);
+  if (!user) return;
+
+  setUser(user);
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !data) return;
+
+  setName(data.full_name || "");
+  setBio(data.bio || "");
+
+  if (Array.isArray(data.skills)) {
+    setSkills(data.skills);
   }
+
+  if (Array.isArray(data.goals)) {
+    setGoals(data.goals);
+  }
+
+  if (Array.isArray(data.interests)) {
+    setInterests(data.interests.join(", "));
+  }
+}
 
   function toggleGoal(goal: string) {
   if (goals.includes(goal)) {

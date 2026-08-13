@@ -14,7 +14,7 @@ export default function LoginPage() {
   async function handleLogin() {
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -24,7 +24,30 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/profile");
+    const user = data.user;
+
+    if (!user) {
+      setMessage("Could not find user.");
+      return;
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (profileError) {
+      console.error(profileError);
+      setMessage("Could not check your profile.");
+      return;
+    }
+
+    if (profile) {
+      router.push("/dashboard");
+    } else {
+      router.push("/profile");
+    }
   }
 
   return (
