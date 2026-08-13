@@ -50,7 +50,7 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
-    getUserAndProfile();
+    checkProfile();
   }, []);
 
   async function getUserAndProfile() {
@@ -99,6 +99,29 @@ export default function ProfilePage() {
     setSkills(skills.filter((item) => item !== skill));
   } else {
     setSkills([...skills, skill]);
+  }
+}
+
+  async function checkProfile() {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    router.push("/login");
+    return;
+  }
+
+  setUser(user);
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (profile) {
+    router.push("/dashboard");
   }
 }
 
