@@ -90,17 +90,33 @@ export default function DashboardPage() {
           Welcome back to STEM Forge.
         </p>
 
-        <div className="mt-8">
+        <div className="grid md:grid-cols-2 gap-6 mt-10">
 
-          <h2 className="text-xl font-bold mb-3">
-            Your Skills
-          </h2>
+  <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-6">
 
-          <p className="text-gray-400">
-            {skills || "No skills added yet."}
-          </p>
+    <h2 className="text-xl font-bold mb-3">
+      Your Skills
+    </h2>
 
-        </div>
+    <p className="text-gray-400">
+      {skills || "No skills added yet."}
+    </p>
+
+  </div>
+
+  <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-6">
+
+    <h2 className="text-xl font-bold mb-3">
+      Projects
+    </h2>
+
+    <p className="text-gray-400">
+      0 Projects
+    </p>
+
+  </div>
+
+</div>
 
       </div>
 
