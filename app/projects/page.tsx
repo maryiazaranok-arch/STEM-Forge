@@ -52,9 +52,10 @@ export default function ProjectsPage() {
         </p>
 
         <button
-          className="mt-8 px-5 py-3 rounded-lg bg-gradient-to-r from-violet-500/70 to-blue-500/70 hover:from-violet-500 hover:to-blue-500 transition"
+        onClick={() => router.push("/projects/create")}
+        className="mt-8 px-5 py-3 rounded-xl bg-gradient-to-r from-violet-500/70 to-blue-500/70 hover:from-violet-500 hover:to-blue-500 transition font-medium shadow-lg shadow-violet-500/10"
         >
-          Create Project
+         Create Project
         </button>
 
       </div>
