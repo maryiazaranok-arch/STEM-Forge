@@ -1,9 +1,30 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function ProjectsPage() {
   const router = useRouter();
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+  loadProjects();
+}, []);
+
+async function loadProjects() {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  setProjects(data || []);
+}
 
   return (
     <main className="min-h-screen bg-[#0D1117] text-white px-6 py-12">
@@ -57,6 +78,13 @@ export default function ProjectsPage() {
         >
          Create Project
         </button>
+
+        <div className="mt-10 space-y-4">
+
+    {projects.map((project) => (
+      
+
+</div>
 
       </div>
 
