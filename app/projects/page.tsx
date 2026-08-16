@@ -81,7 +81,28 @@ async function loadProjects() {
 
         <div className="mt-10 space-y-4">
 
-    {projects.map((project) => (
+    <div className="mt-10 space-y-4">
+
+  {projects.map((project) => (
+    <div
+      key={project.id}
+      className="bg-[#161B22] border border-gray-800 rounded-2xl p-6"
+    >
+      <h2 className="text-xl font-bold mb-2">
+        {project.title}
+      </h2>
+
+      <p className="text-gray-400 mb-3">
+        {project.description}
+      </p>
+
+      <p className="text-sm text-purple-300">
+        {project.required_skills}
+      </p>
+    </div>
+  ))}
+
+</div>
       
 
 </div>
