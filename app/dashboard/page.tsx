@@ -38,6 +38,7 @@ export default function DashboardPage() {
   }
 
   return (
+
     <main className="min-h-screen bg-[#0D1117] text-white px-6 py-12">
 
       <div className="flex justify-between items-center mb-12">
@@ -82,39 +83,47 @@ export default function DashboardPage() {
 
       <div className="max-w-4xl mx-auto">
 
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-violet-500/90 to-blue-500/90 bg-clip-text text-transparent">
           Welcome{name ? `, ${name}` : ""}!
         </h1>
 
-        <p className="text-gray-400 mt-3">
-          Welcome back to STEM Forge.
+        <p className="text-gray-400 mt-4 text-lg">
+          Build. Research. Create.
+        </p>
+
+        <p className="text-gray-500 mt-2">
+          Find teammates, launch projects, and grow your portfolio.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 mt-10">
 
-  <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-6">
+  <div className="grid md:grid-cols-2 gap-6 mt-10">
+
+  <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-8 hover:border-violet-500/40 transition">
 
     <h2 className="text-xl font-bold mb-3">
-      Your Skills
+      Skills
     </h2>
 
-    <p className="text-gray-400">
-      {skills || "No skills added yet."}
+    <p className="text-3xl font-bold text-violet-400">
+      {skills ? skills.split(",").length : 0}
     </p>
 
   </div>
 
-  <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-6">
+  <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-8 hover:border-blue-500/40 transition">
 
     <h2 className="text-xl font-bold mb-3">
       Projects
     </h2>
 
-    <p className="text-gray-400">
-      0 Projects
+    <p className="text-3xl font-bold text-blue-400">
+      1
     </p>
 
   </div>
+
+</div>
 
 </div>
 
