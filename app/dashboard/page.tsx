@@ -7,10 +7,13 @@ import { supabase } from "@/lib/supabase";
 export default function DashboardPage() {
   const [name, setName] = useState("");
   const [skills, setSkills] = useState("");
+  const [projectCount, setProjectCount] = useState(0);
+  const [projects, setProjects] = useState<any[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    loadProfile();
+  loadProfile();
+  loadProjects();
   }, []);
 
   async function loadProfile() {
@@ -36,6 +39,18 @@ export default function DashboardPage() {
     await supabase.auth.signOut();
     router.push("/login");
   }
+
+  async function loadProjects() {
+  const { data } = await supabase
+    .from("projects")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (data) {
+    setProjects(data);
+    setProjectCount(data.length);
+  }
+}
 
   return (
 
@@ -97,8 +112,6 @@ export default function DashboardPage() {
 
         <div className="grid md:grid-cols-2 gap-6 mt-10">
 
-  <div className="grid md:grid-cols-2 gap-6 mt-10">
-
   <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-8 hover:border-violet-500/40 transition">
 
     <h2 className="text-xl font-bold mb-3">
@@ -118,8 +131,33 @@ export default function DashboardPage() {
     </h2>
 
     <p className="text-3xl font-bold text-blue-400">
-      1
+      {projectCount}
     </p>
+
+  </div>
+
+    <div className="mt-12">
+
+  <h2 className="text-2xl font-bold mb-6">
+    Recent Projects
+  </h2>
+
+  <div className="space-y-4">
+
+    {projects.slice(0, 3).map((project) => (
+      <div
+        key={project.id}
+        className="bg-[#161B22] border border-gray-800 rounded-2xl p-6"
+      >
+        <h3 className="font-bold text-lg">
+          {project.title}
+        </h3>
+
+        <p className="text-gray-400 mt-2">
+          {project.description}
+        </p>
+      </div>
+    ))}
 
   </div>
 
@@ -127,7 +165,7 @@ export default function DashboardPage() {
 
 </div>
 
-      </div>
+</div>
 
     </main>
   );
