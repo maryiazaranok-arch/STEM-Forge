@@ -9,105 +9,188 @@ export default function ProjectsPage() {
   const [projects, setProjects] = useState<any[]>([]);
 
   useEffect(() => {
-  loadProjects();
-}, []);
+    loadProjects();
+  }, []);
 
-async function loadProjects() {
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .order("created_at", { ascending: false });
+  async function loadProjects() {
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    console.error(error);
-    return;
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setProjects(data || []);
   }
 
-  setProjects(data || []);
-}
-
   return (
-    <main className="min-h-screen bg-[#0D1117] text-white px-6 py-12">
+    <main className="min-h-screen bg-[#F5F0E8] text-[#2C211B] px-6 py-8">
 
-      <div className="flex justify-between items-center mb-12">
+      {/* Navigation */}
+      <nav className="max-w-6xl mx-auto flex items-center justify-between">
 
-        <h1 className="font-bold text-xl bg-gradient-to-r from-violet-500/80 to-blue-500/80 bg-clip-text text-transparent">
+        <button
+          onClick={() => router.push("/dashboard")}
+          className="text-xl font-bold tracking-tight text-[#2C211B] hover:text-[#8A5A3B] transition"
+        >
           STEM Forge
-        </h1>
+        </button>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-8">
 
           <button
             onClick={() => router.push("/dashboard")}
-            className="text-gray-300 hover:bg-gradient-to-r hover:from-violet-500/80 hover:to-blue-500/80 hover:bg-clip-text hover:text-transparent transition"
+            className="text-[#796B60] hover:text-[#8A5A3B] transition"
           >
             Dashboard
           </button>
 
           <button
             onClick={() => router.push("/projects")}
-            className="text-gray-300 hover:bg-gradient-to-r hover:from-violet-500/80 hover:to-blue-500/80 hover:bg-clip-text hover:text-transparent transition"
+            className="text-[#2C211B] font-medium"
           >
             Projects
           </button>
 
           <button
             onClick={() => router.push("/profile")}
-            className="text-gray-300 hover:bg-gradient-to-r hover:from-violet-500/80 hover:to-blue-500/80 hover:bg-clip-text hover:text-transparent transition"
+            className="text-[#796B60] hover:text-[#8A5A3B] transition"
           >
             Profile
           </button>
 
         </div>
 
-      </div>
+      </nav>
 
-      <div className="max-w-4xl mx-auto">
+      {/* Hero */}
+      <section className="max-w-6xl mx-auto mt-24">
 
-        <h1 className="text-4xl font-bold">
-          Projects
-        </h1>
+        <div className="max-w-2xl">
 
-        <p className="text-gray-400 mt-3">
-          Discover projects and find teammates.
-        </p>
+          <p className="text-sm uppercase tracking-[0.2em] text-[#8A5A3B] font-medium mb-4">
+            Discover & Build
+          </p>
+
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight">
+            Explore Projects
+          </h1>
+
+          <p className="text-lg text-[#796B60] mt-5 max-w-xl leading-relaxed">
+            Discover ideas, find talented teammates, and build something
+            meaningful together.
+          </p>
+
+        </div>
 
         <button
-        onClick={() => router.push("/projects/create")}
-        className="mt-8 px-5 py-3 rounded-xl bg-gradient-to-r from-violet-500/70 to-blue-500/70 hover:from-violet-500 hover:to-blue-500 transition font-medium shadow-lg shadow-violet-500/10"
+          onClick={() => router.push("/projects/create")}
+          className="mt-9 px-6 py-3 rounded-full bg-[#8A5A3B] text-white font-medium shadow-md shadow-[#8A5A3B]/15 hover:bg-[#68422D] hover:-translate-y-0.5 transition-all"
         >
-         Create Project
+          + Create Project
         </button>
 
-        <div className="mt-10 space-y-4">
+      </section>
 
-    <div className="mt-10 space-y-4">
+      {/* Projects */}
+      <section className="max-w-6xl mx-auto mt-20 pb-20">
 
-  {projects.map((project) => (
-    <div
-      key={project.id}
-      className="bg-[#161B22] border border-gray-800 rounded-2xl p-6"
-    >
-      <h2 className="text-xl font-bold mb-2">
-        {project.title}
-      </h2>
+        {projects.length === 0 ? (
 
-      <p className="text-gray-400 mb-3">
-        {project.description}
-      </p>
+          <div className="bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-12 text-center shadow-sm">
 
-      <p className="text-sm text-purple-300">
-        {project.required_skills}
-      </p>
-    </div>
-  ))}
+            <div className="w-14 h-14 mx-auto rounded-full bg-[#EFE4D6] flex items-center justify-center mb-6">
+              <span className="text-xl text-[#8A5A3B]">
+                ✦
+              </span>
+            </div>
 
-</div>
-      
+            <h2 className="text-2xl font-bold">
+              No projects yet
+            </h2>
 
-</div>
+            <p className="text-[#796B60] mt-3">
+              Be the first to create something on STEM Forge.
+            </p>
 
-      </div>
+          </div>
+
+        ) : (
+
+          <div className="grid md:grid-cols-2 gap-6">
+
+            {projects.map((project) => {
+
+              const skills = Array.isArray(project.required_skills)
+                ? project.required_skills
+                : project.required_skills
+                    ?.split(",")
+                    .map((skill: string) => skill.trim())
+                    .filter(Boolean);
+
+              return (
+                <div
+                  key={project.id}
+                  className="group bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-7 shadow-sm hover:shadow-lg hover:shadow-[#8A5A3B]/10 hover:-translate-y-1 hover:border-[#CDBBA7] transition-all"
+                >
+
+                  <div className="flex items-start justify-between gap-4">
+
+                    <h2 className="text-2xl font-bold leading-tight">
+                      {project.title}
+                    </h2>
+
+                    <span className="text-[#8A5A3B] text-xl opacity-0 group-hover:opacity-100 transition">
+                      →
+                    </span>
+
+                  </div>
+
+                  <p className="text-[#796B60] mt-4 leading-relaxed line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  {skills && skills.length > 0 && (
+                    <div className="mt-6 flex flex-wrap gap-2">
+
+                      {skills.map((skill: string, index: number) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1.5 rounded-full bg-[#EFE4D6] text-[#68422D] text-sm font-medium"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+
+                    </div>
+                  )}
+
+                  <div className="mt-8 pt-5 border-t border-[#EDE3D8] flex items-center justify-between">
+
+                    <span className="text-sm text-[#9A8C80]">
+                      STEM Project
+                    </span>
+
+                    <button
+                      className="text-sm font-medium text-[#8A5A3B] hover:text-[#68422D] transition"
+                    >
+                      View project →
+                    </button>
+
+                  </div>
+
+                </div>
+              );
+            })}
+
+          </div>
+
+        )}
+
+      </section>
 
     </main>
   );
