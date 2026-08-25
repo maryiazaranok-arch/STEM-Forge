@@ -51,53 +51,116 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0D1117] text-white flex items-center justify-center px-6">
+    <main className="min-h-screen bg-[#F5F0E8] text-[#2C211B] flex items-center justify-center px-6">
 
-      <div className="w-full max-w-md bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+      <div className="w-full max-w-md">
 
-        <h1 className="text-3xl font-bold mb-6">
-          Welcome Back
-        </h1>
-
-        <div className="space-y-4">
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 rounded-lg bg-[#0D1117] border border-gray-700 outline-none focus:border-purple-500"
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 rounded-lg bg-[#0D1117] border border-gray-700 outline-none focus:border-purple-500"
-          />
+        {/* Logo */}
+        <div className="text-center mb-10">
 
           <button
-            onClick={() => router.push("/forgot-password")}
-            className="text-sm text-gray-400 hover:text-violet-400 transition"
+            onClick={() => router.push("/")}
+            className="text-xl font-bold tracking-tight hover:text-[#8A5A3B] transition"
           >
-            Forgot password?
+            STEM Forge
           </button>
-                                                                                                                                              
-          <button
-            onClick={handleLogin}
-            className="w-full bg-[#8B5CF6] p-3 rounded-lg hover:bg-purple-700 transition"
-          >
-            Login
-          </button>
-
-          {message && (
-            <p className="text-red-400 text-sm">
-              {message}
-            </p>
-          )}
 
         </div>
+
+        {/* Card */}
+        <div className="bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-8 md:p-10 shadow-sm">
+
+          <div className="mb-8">
+
+            <p className="text-sm uppercase tracking-[0.2em] text-[#8A5A3B] font-medium mb-3">
+              Welcome back
+            </p>
+
+            <h1 className="text-3xl font-bold tracking-tight">
+              Log in
+            </h1>
+
+            <p className="text-[#796B60] mt-3 leading-relaxed">
+              Continue building projects and collaborating with students.
+            </p>
+
+          </div>
+
+          <div className="space-y-5">
+
+            {/* Email */}
+            <div>
+
+              <label className="block text-sm font-medium text-[#4A3B32] mb-2">
+                Email
+              </label>
+
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-[#F8F3EC] border border-[#E2D5C6] text-[#2C211B] placeholder:text-[#A69A8F] outline-none focus:border-[#8A5A3B] focus:ring-2 focus:ring-[#8A5A3B]/10 transition"
+              />
+
+            </div>
+
+            {/* Password */}
+            <div>
+
+              <label className="block text-sm font-medium text-[#4A3B32] mb-2">
+                Password
+              </label>
+
+              <input
+                type="password"
+                placeholder="Your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-[#F8F3EC] border border-[#E2D5C6] text-[#2C211B] placeholder:text-[#A69A8F] outline-none focus:border-[#8A5A3B] focus:ring-2 focus:ring-[#8A5A3B]/10 transition"
+              />
+
+            </div>
+
+            {/* Forgot password */}
+            <button
+              onClick={() => router.push("/forgot-password")}
+              className="text-sm text-[#796B60] hover:text-[#8A5A3B] transition"
+            >
+              Forgot password?
+            </button>
+
+            {/* Login button */}
+            <button
+              onClick={handleLogin}
+              className="w-full py-3.5 rounded-full bg-[#8A5A3B] text-white font-medium hover:bg-[#68422D] hover:-translate-y-0.5 transition-all shadow-md shadow-[#8A5A3B]/15"
+            >
+              Login
+            </button>
+
+            {message && (
+              <p className="text-sm text-red-500">
+                {message}
+              </p>
+            )}
+
+          </div>
+
+          <p className="text-center text-sm text-[#796B60] mt-7">
+            Don't have an account?{" "}
+            <button
+              onClick={() => router.push("/register")}
+              className="font-medium text-[#8A5A3B] hover:text-[#68422D] transition"
+            >
+              Create one
+            </button>
+          </p>
+
+        </div>
+
+        <p className="text-center text-xs text-[#A69A8F] mt-6">
+          Build. Research. Create.
+        </p>
 
       </div>
 
