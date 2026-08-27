@@ -51,47 +51,50 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F0E8] text-[#2C211B] flex items-center justify-center px-6">
+    <main className="min-h-screen bg-[#F5F4F0] text-[#202733] flex items-center justify-center px-6 py-10">
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-xl">
 
-        {/* Logo */}
-        <div className="text-center mb-10">
+        <div className="flex items-center justify-between mb-12">
 
           <button
             onClick={() => router.push("/")}
-            className="text-xl font-bold tracking-tight hover:text-[#8A5A3B] transition"
+            className="text-xl font-bold tracking-tight hover:text-[#5F7F91] transition"
           >
             STEM Forge
           </button>
 
+          <button
+            onClick={() => router.push("/register")}
+            className="text-sm font-medium text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Sign up
+          </button>
+
         </div>
 
-        {/* Card */}
-        <div className="bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-8 md:p-10 shadow-sm">
+        <div className="mb-8">
 
-          <div className="mb-8">
+          <p className="text-sm uppercase tracking-[0.16em] font-semibold text-[#5F7F91] mb-3">
+            Welcome back
+          </p>
 
-            <p className="text-sm uppercase tracking-[0.2em] text-[#8A5A3B] font-medium mb-3">
-              Welcome back
-            </p>
+          <h1 className="text-4xl font-bold tracking-tight">
+            Log in
+          </h1>
 
-            <h1 className="text-3xl font-bold tracking-tight">
-              Log in
-            </h1>
+          <p className="text-base text-[#6F7782] mt-3 leading-relaxed">
+            Continue your work and projects on STEM Forge.
+          </p>
 
-            <p className="text-[#796B60] mt-3 leading-relaxed">
-              Continue building projects and collaborating with students.
-            </p>
+        </div>
 
-          </div>
+        <div className="bg-white border border-[#DFE1DE] rounded-2xl p-8 md:p-9 shadow-sm">
 
-          <div className="space-y-5">
+          <div className="space-y-6">
 
-            {/* Email */}
             <div>
-
-              <label className="block text-sm font-medium text-[#4A3B32] mb-2">
+              <label className="block text-sm font-medium mb-2">
                 Email
               </label>
 
@@ -100,42 +103,41 @@ export default function LoginPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-[#F8F3EC] border border-[#E2D5C6] text-[#2C211B] placeholder:text-[#A69A8F] outline-none focus:border-[#8A5A3B] focus:ring-2 focus:ring-[#8A5A3B]/10 transition"
+                className="w-full px-4 py-3.5 rounded-lg bg-[#F8F8F6] border border-[#DFE1DE] outline-none placeholder:text-[#9BA2AA] focus:border-[#5F7F91] transition"
               />
-
             </div>
 
-            {/* Password */}
             <div>
 
-              <label className="block text-sm font-medium text-[#4A3B32] mb-2">
-                Password
-              </label>
+              <div className="flex items-center justify-between mb-2">
+
+                <label className="block text-sm font-medium">
+                  Password
+                </label>
+
+                <button
+                  onClick={() => router.push("/forgot-password")}
+                  className="text-sm text-[#6F7782] hover:text-[#5F7F91] transition"
+                >
+                  Forgot password?
+                </button>
+
+              </div>
 
               <input
                 type="password"
                 placeholder="Your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-[#F8F3EC] border border-[#E2D5C6] text-[#2C211B] placeholder:text-[#A69A8F] outline-none focus:border-[#8A5A3B] focus:ring-2 focus:ring-[#8A5A3B]/10 transition"
+                className="w-full px-4 py-3.5 rounded-lg bg-[#F8F8F6] border border-[#DFE1DE] outline-none placeholder:text-[#9BA2AA] focus:border-[#5F7F91] transition"
               />
-
             </div>
 
-            {/* Forgot password */}
-            <button
-              onClick={() => router.push("/forgot-password")}
-              className="text-sm text-[#796B60] hover:text-[#8A5A3B] transition"
-            >
-              Forgot password?
-            </button>
-
-            {/* Login button */}
             <button
               onClick={handleLogin}
-              className="w-full py-3.5 rounded-full bg-[#8A5A3B] text-white font-medium hover:bg-[#68422D] hover:-translate-y-0.5 transition-all shadow-md shadow-[#8A5A3B]/15"
+              className="w-full py-3.5 rounded-lg bg-[#202733] text-white font-medium hover:bg-[#303948] transition"
             >
-              Login
+              Log in
             </button>
 
             {message && (
@@ -146,21 +148,17 @@ export default function LoginPage() {
 
           </div>
 
-          <p className="text-center text-sm text-[#796B60] mt-7">
+          <p className="text-center text-sm text-[#6F7782] mt-7">
             Don't have an account?{" "}
             <button
               onClick={() => router.push("/register")}
-              className="font-medium text-[#8A5A3B] hover:text-[#68422D] transition"
+              className="font-medium text-[#5F7F91] hover:text-[#202733] transition"
             >
-              Create one
+              Sign up
             </button>
           </p>
 
         </div>
-
-        <p className="text-center text-xs text-[#A69A8F] mt-6">
-          Build. Research. Create.
-        </p>
 
       </div>
 

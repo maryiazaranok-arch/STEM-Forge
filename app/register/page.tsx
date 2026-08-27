@@ -4,18 +4,67 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
+const skillOptions = [
+  "Programming",
+  "Mathematics",
+  "Physics",
+  "Biology",
+  "Chemistry",
+  "Research",
+  "Engineering",
+  "Artificial Intelligence",
+  "Robotics",
+  "Data Science",
+  "Entrepreneurship",
+  "Design",
+  "Public Speaking",
+  "Leadership",
+];
+
+const goalOptions = [
+  "Find Teammates",
+  "Build a Project",
+  "Join a Project",
+  "Conduct Research",
+  "Find a Mentor",
+  "Start a Startup",
+  "Participate in Competitions",
+  "Build a Portfolio",
+];
+
 export default function RegisterPage() {
   const router = useRouter();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [skills, setSkills] = useState<string[]>([]);
+  const [goals, setGoals] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = async () => {
+  function toggleSkill(skill: string) {
+    setSkills((current) =>
+      current.includes(skill)
+        ? current.filter((item) => item !== skill)
+        : [...current, skill]
+    );
+  }
+
+  function toggleGoal(goal: string) {
+    setGoals((current) =>
+      current.includes(goal)
+        ? current.filter((item) => item !== goal)
+        : [...current, goal]
+    );
+  }
+
+  async function handleRegister() {
     if (!name || !email || !password) {
       alert("Please fill in all fields.");
       return;
     }
+
+    setLoading(true);
 
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -30,6 +79,7 @@ export default function RegisterPage() {
 
     if (error) {
       alert(error.message);
+      setLoading(false);
       return;
     }
 
@@ -37,6 +87,7 @@ export default function RegisterPage() {
 
     if (!user) {
       alert("Account could not be created.");
+      setLoading(false);
       return;
     }
 
@@ -45,64 +96,67 @@ export default function RegisterPage() {
       .insert({
         id: user.id,
         full_name: name,
-        skills: [],
+        skills,
         interests: [],
-        goals: [],
+        goals,
       });
 
     if (profileError) {
       console.error(profileError);
       alert("Account created, but profile could not be created.");
+      setLoading(false);
       return;
     }
 
     alert("Account created! Check your email.");
-
-    router.push("/profile");
-  };
+    router.push("/profile/edit");
+  }
 
   return (
-    <main className="min-h-screen bg-[#F5F0E8] text-[#2C211B] flex items-center justify-center px-6">
+    <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-8">
 
-      <div className="w-full max-w-md">
+      <div className="max-w-2xl mx-auto">
 
-        {/* Logo */}
-        <div className="text-center mb-10">
+        <div className="flex items-center justify-between mb-12">
 
           <button
             onClick={() => router.push("/")}
-            className="text-xl font-bold tracking-tight text-[#2C211B] hover:text-[#8A5A3B] transition"
+            className="text-xl font-bold tracking-tight hover:text-[#5F7F91] transition"
           >
             STEM Forge
           </button>
 
+          <button
+            onClick={() => router.push("/login")}
+            className="text-sm text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Log in
+          </button>
+
         </div>
 
-        {/* Card */}
-        <div className="bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-8 md:p-10 shadow-sm">
+        <div className="max-w-xl mb-8">
 
-          <div className="mb-8">
+          <p className="text-xs uppercase tracking-[0.18em] font-semibold text-[#5F7F91] mb-3">
+            Get started
+          </p>
 
-            <p className="text-sm uppercase tracking-[0.2em] text-[#8A5A3B] font-medium mb-3">
-              Get started
-            </p>
+          <h1 className="text-4xl font-bold tracking-tight">
+            Create your account
+          </h1>
 
-            <h1 className="text-3xl font-bold tracking-tight">
-              Create your account
-            </h1>
+          <p className="mt-3 text-[#6F7782] leading-relaxed">
+            Tell us about yourself and what you want to build.
+          </p>
 
-            <p className="text-[#796B60] mt-3 leading-relaxed">
-              Join STEM Forge and start building something meaningful.
-            </p>
+        </div>
 
-          </div>
+        <div className="bg-white border border-[#DFE1DE] rounded-2xl p-7 md:p-9 shadow-sm">
 
-          <div className="space-y-5">
+          <div className="space-y-7">
 
-            {/* Name */}
             <div>
-
-              <label className="block text-sm font-medium text-[#4A3B32] mb-2">
+              <label className="block text-sm font-medium mb-2">
                 Full Name
               </label>
 
@@ -111,15 +165,12 @@ export default function RegisterPage() {
                 placeholder="Your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-[#F8F3EC] border border-[#E2D5C6] text-[#2C211B] placeholder:text-[#A69A8F] outline-none focus:border-[#8A5A3B] focus:ring-2 focus:ring-[#8A5A3B]/10 transition"
+                className="w-full px-4 py-3 rounded-lg bg-[#F8F8F6] border border-[#DFE1DE] text-[#202733] placeholder:text-[#9BA2AA] outline-none focus:border-[#5F7F91] transition"
               />
-
             </div>
 
-            {/* Email */}
             <div>
-
-              <label className="block text-sm font-medium text-[#4A3B32] mb-2">
+              <label className="block text-sm font-medium mb-2">
                 Email
               </label>
 
@@ -128,15 +179,12 @@ export default function RegisterPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-[#F8F3EC] border border-[#E2D5C6] text-[#2C211B] placeholder:text-[#A69A8F] outline-none focus:border-[#8A5A3B] focus:ring-2 focus:ring-[#8A5A3B]/10 transition"
+                className="w-full px-4 py-3 rounded-lg bg-[#F8F8F6] border border-[#DFE1DE] text-[#202733] placeholder:text-[#9BA2AA] outline-none focus:border-[#5F7F91] transition"
               />
-
             </div>
 
-            {/* Password */}
             <div>
-
-              <label className="block text-sm font-medium text-[#4A3B32] mb-2">
+              <label className="block text-sm font-medium mb-2">
                 Password
               </label>
 
@@ -145,36 +193,81 @@ export default function RegisterPage() {
                 placeholder="Create a password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-[#F8F3EC] border border-[#E2D5C6] text-[#2C211B] placeholder:text-[#A69A8F] outline-none focus:border-[#8A5A3B] focus:ring-2 focus:ring-[#8A5A3B]/10 transition"
+                className="w-full px-4 py-3 rounded-lg bg-[#F8F8F6] border border-[#DFE1DE] text-[#202733] placeholder:text-[#9BA2AA] outline-none focus:border-[#5F7F91] transition"
               />
-
             </div>
 
-            {/* Button */}
+            <div>
+              <label className="block text-sm font-medium mb-3">
+                Skills
+              </label>
+
+              <div className="flex flex-wrap gap-2">
+
+                {skillOptions.map((skill) => (
+                  <button
+                    key={skill}
+                    type="button"
+                    onClick={() => toggleSkill(skill)}
+                    className={`px-3.5 py-2 rounded-lg border text-sm transition ${
+                      skills.includes(skill)
+                        ? "bg-[#5F7F91] border-[#5F7F91] text-white"
+                        : "bg-white border-[#D9DDDA] text-[#6F7782] hover:border-[#5F7F91] hover:text-[#202733]"
+                    }`}
+                  >
+                    {skill}
+                  </button>
+                ))}
+
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-3">
+                Goals
+              </label>
+
+              <div className="flex flex-wrap gap-2">
+
+                {goalOptions.map((goal) => (
+                  <button
+                    key={goal}
+                    type="button"
+                    onClick={() => toggleGoal(goal)}
+                    className={`px-3.5 py-2 rounded-lg border text-sm transition ${
+                      goals.includes(goal)
+                        ? "bg-[#5F7F91] border-[#5F7F91] text-white"
+                        : "bg-white border-[#D9DDDA] text-[#6F7782] hover:border-[#5F7F91] hover:text-[#202733]"
+                    }`}
+                  >
+                    {goal}
+                  </button>
+                ))}
+
+              </div>
+            </div>
+
             <button
               onClick={handleRegister}
-              className="w-full py-3.5 rounded-full bg-[#8A5A3B] text-white font-medium hover:bg-[#68422D] hover:-translate-y-0.5 shadow-md shadow-[#8A5A3B]/15 transition-all"
+              disabled={loading}
+              className="w-full py-3.5 rounded-lg bg-[#273855] text-white font-medium hover:bg-[#364257] disabled:opacity-50 transition"
             >
-              Create Account
+              {loading ? "Creating account..." : "Create Account"}
             </button>
 
           </div>
 
-          <p className="text-center text-sm text-[#796B60] mt-7">
+          <p className="text-center text-sm text-[#6F7782] mt-7">
             Already have an account?{" "}
             <button
               onClick={() => router.push("/login")}
-              className="font-medium text-[#8A5A3B] hover:text-[#68422D] transition"
+              className="font-medium text-[#5F7F91] hover:text-[#202733] transition"
             >
               Log in
             </button>
           </p>
 
         </div>
-
-        <p className="text-center text-xs text-[#A69A8F] mt-6">
-          Build. Research. Create.
-        </p>
 
       </div>
 

@@ -30,7 +30,7 @@ export default function DashboardPage() {
       .single();
 
     if (data) {
-      setName(data.full_name);
+      setName(data.full_name || "");
       setSkills(data.skills || "");
     }
   }
@@ -41,15 +41,18 @@ export default function DashboardPage() {
   }
 
   async function loadProjects() {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("projects")
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (data) {
-      setProjects(data);
-      setProjectCount(data.length);
+    if (error) {
+      console.error(error);
+      return;
     }
+
+    setProjects(data || []);
+    setProjectCount(data?.length || 0);
   }
 
   const skillCount = skills
@@ -60,44 +63,50 @@ export default function DashboardPage() {
     : 0;
 
   return (
-    <main className="min-h-screen bg-[#F5F0E8] text-[#2C211B] px-6 py-8">
+    <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-8">
 
-      {/* Navigation */}
       <nav className="max-w-6xl mx-auto flex items-center justify-between">
 
         <button
-          onClick={() => router.push("/dashboard")}
-          className="text-xl font-bold tracking-tight text-[#2C211B] hover:text-[#8A5A3B] transition"
+          onClick={() => router.push("/")}
+          className="text-xl font-bold tracking-tight hover:text-[#5F7F91] transition"
         >
           STEM Forge
         </button>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-7">
 
           <button
             onClick={() => router.push("/dashboard")}
-            className="text-[#2C211B] font-medium"
+            className="text-[#202733] font-medium"
           >
             Dashboard
           </button>
 
           <button
             onClick={() => router.push("/projects")}
-            className="text-[#796B60] hover:text-[#8A5A3B] transition"
+            className="text-[#6F7782] hover:text-[#202733] transition"
           >
             Projects
           </button>
 
           <button
+            onClick={() => router.push("/learn")}
+            className="text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Learn
+          </button>
+
+          <button
             onClick={() => router.push("/profile")}
-            className="text-[#796B60] hover:text-[#8A5A3B] transition"
+            className="text-[#6F7782] hover:text-[#202733] transition"
           >
             Profile
           </button>
 
           <button
             onClick={handleLogout}
-            className="px-4 py-2 rounded-full border border-[#D8CABB] text-[#796B60] hover:bg-[#FFFDF8] hover:text-[#8A5A3B] hover:border-[#CDBBA7] transition"
+            className="text-[#6F7782] hover:text-[#202733] transition"
           >
             Logout
           </button>
@@ -106,86 +115,53 @@ export default function DashboardPage() {
 
       </nav>
 
-      {/* Welcome */}
       <section className="max-w-6xl mx-auto mt-20">
 
-        <div className="max-w-3xl">
+        <p className="text-sm text-[#5F7F91] font-medium mb-3">
+          Dashboard
+        </p>
 
-          <p className="text-sm uppercase tracking-[0.2em] text-[#8A5A3B] font-medium mb-4">
-            Your workspace
-          </p>
+        <h1 className="text-4xl font-bold tracking-tight">
+          Welcome{name ? `, ${name}` : ""}
+        </h1>
 
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight">
-            Welcome{name ? `, ${name}` : ""}.
-          </h1>
-
-          <p className="text-lg text-[#796B60] mt-5 leading-relaxed max-w-2xl">
-            Build projects, find teammates, and turn your ideas into
-            something real.
-          </p>
-
-        </div>
+        <p className="text-[#6F7782] mt-3 max-w-xl">
+          Keep track of your skills and projects.
+        </p>
 
       </section>
 
-      {/* Stats */}
-      <section className="max-w-6xl mx-auto mt-12">
+      <section className="max-w-6xl mx-auto mt-10">
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-5">
 
-          {/* Skills */}
-          <div className="group bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-7 shadow-sm hover:shadow-lg hover:shadow-[#8A5A3B]/10 hover:-translate-y-1 transition-all">
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-6 shadow-sm">
 
-            <div className="flex items-start justify-between">
+            <p className="text-sm text-[#6F7782]">
+              Skills
+            </p>
 
-              <div>
-                <p className="text-sm text-[#9A8C80] uppercase tracking-wider">
-                  Skills
-                </p>
+            <p className="text-3xl font-bold mt-3">
+              {skillCount}
+            </p>
 
-                <p className="text-4xl font-bold mt-4 text-[#2C211B]">
-                  {skillCount}
-                </p>
-              </div>
-
-              <div className="w-11 h-11 rounded-2xl bg-[#EFE4D6] flex items-center justify-center">
-                <span className="text-[#8A5A3B]">
-                  ✦
-                </span>
-              </div>
-
-            </div>
-
-            <p className="text-[#796B60] mt-5">
+            <p className="text-sm text-[#8C939D] mt-2">
               Skills in your profile
             </p>
 
           </div>
 
-          {/* Projects */}
-          <div className="group bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-7 shadow-sm hover:shadow-lg hover:shadow-[#8A5A3B]/10 hover:-translate-y-1 transition-all">
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-6 shadow-sm">
 
-            <div className="flex items-start justify-between">
+            <p className="text-sm text-[#6F7782]">
+              Projects
+            </p>
 
-              <div>
-                <p className="text-sm text-[#9A8C80] uppercase tracking-wider">
-                  Projects
-                </p>
+            <p className="text-3xl font-bold mt-3">
+              {projectCount}
+            </p>
 
-                <p className="text-4xl font-bold mt-4 text-[#2C211B]">
-                  {projectCount}
-                </p>
-              </div>
-
-              <div className="w-11 h-11 rounded-2xl bg-[#EFE4D6] flex items-center justify-center">
-                <span className="text-[#8A5A3B]">
-                  ◇
-                </span>
-              </div>
-
-            </div>
-
-            <p className="text-[#796B60] mt-5">
+            <p className="text-sm text-[#8C939D] mt-2">
               Projects you've created
             </p>
 
@@ -195,51 +171,44 @@ export default function DashboardPage() {
 
       </section>
 
-      {/* Recent Projects */}
-      <section className="max-w-6xl mx-auto mt-16 pb-20">
+      <section className="max-w-6xl mx-auto mt-14 pb-20">
 
-        <div className="flex items-end justify-between mb-6">
+        <div className="flex items-center justify-between mb-6">
 
           <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-[#8A5A3B] font-medium">
+            <p className="text-sm text-[#5F7F91] font-medium">
               Your work
             </p>
 
-            <h2 className="text-3xl font-bold mt-2">
+            <h2 className="text-2xl font-bold mt-1">
               Recent Projects
             </h2>
           </div>
 
           <button
             onClick={() => router.push("/projects")}
-            className="text-sm font-medium text-[#8A5A3B] hover:text-[#68422D] transition"
+            className="text-sm text-[#5F7F91] hover:text-[#202733] transition"
           >
-            View all →
+            View all
           </button>
 
         </div>
 
         {projects.length === 0 ? (
 
-          <div className="bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-10 text-center shadow-sm">
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-8 shadow-sm">
 
-            <div className="w-14 h-14 mx-auto rounded-full bg-[#EFE4D6] flex items-center justify-center mb-5">
-              <span className="text-[#8A5A3B] text-xl">
-                +
-              </span>
-            </div>
-
-            <h3 className="text-xl font-bold">
+            <h3 className="text-lg font-semibold">
               No projects yet
             </h3>
 
-            <p className="text-[#796B60] mt-2">
-              Start building something and it will appear here.
+            <p className="text-[#6F7782] mt-2">
+              Create your first project to get started.
             </p>
 
             <button
               onClick={() => router.push("/projects/create")}
-              className="mt-6 px-5 py-3 rounded-full bg-[#8A5A3B] text-white font-medium hover:bg-[#68422D] transition"
+              className="mt-5 px-5 py-2.5 rounded-lg bg-[#202733] text-white hover:bg-[#303948] transition"
             >
               Create Project
             </button>
@@ -254,39 +223,23 @@ export default function DashboardPage() {
 
               <div
                 key={project.id}
-                className="group bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-6 shadow-sm hover:shadow-lg hover:shadow-[#8A5A3B]/10 hover:-translate-y-0.5 transition-all"
+                className="bg-white border border-[#DFE1DE] rounded-xl p-6 shadow-sm"
               >
 
-                <div className="flex items-start justify-between gap-6">
+                <h3 className="text-xl font-semibold">
+                  {project.title}
+                </h3>
 
-                  <div>
-
-                    <h3 className="text-xl font-bold">
-                      {project.title}
-                    </h3>
-
-                    <p className="text-[#796B60] mt-2 leading-relaxed">
-                      {project.description}
-                    </p>
-
-                  </div>
-
-                  <span className="text-[#8A5A3B] text-xl opacity-0 group-hover:opacity-100 transition">
-                    →
-                  </span>
-
-                </div>
+                <p className="text-[#6F7782] mt-2">
+                  {project.description}
+                </p>
 
                 {project.required_skills && (
-                  <div className="mt-5">
-
-                    <span className="inline-block px-3 py-1.5 rounded-full bg-[#EFE4D6] text-[#68422D] text-sm">
-                      {Array.isArray(project.required_skills)
-                        ? project.required_skills.join(", ")
-                        : project.required_skills}
-                    </span>
-
-                  </div>
+                  <p className="text-sm text-[#5F7F91] mt-4">
+                    {Array.isArray(project.required_skills)
+                      ? project.required_skills.join(", ")
+                      : project.required_skills}
+                  </p>
                 )}
 
               </div>

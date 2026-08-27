@@ -50,38 +50,86 @@ export default function UpdatePasswordPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0D1117] text-white flex items-center justify-center px-6">
+    <main className="min-h-screen bg-[#F5F4F0] text-[#202733] flex items-center justify-center px-6 py-10">
 
-      <div className="w-full max-w-md bg-[#161B22] p-8 rounded-2xl border border-gray-800">
+      <div className="w-full max-w-xl">
 
-        <h1 className="text-3xl font-bold mb-3">
-          Reset Password
-        </h1>
+        <div className="flex items-center justify-between mb-12">
 
-        <p className="text-gray-400 mb-6">
-          Enter your new password below.
-        </p>
+          <button
+            onClick={() => router.push("/")}
+            className="text-xl font-bold tracking-tight hover:text-[#5F7F91] transition"
+          >
+            STEM Forge
+          </button>
 
-        <input
-          type="password"
-          placeholder="New password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 rounded-lg bg-[#0D1117] border border-gray-700 outline-none focus:border-purple-500"
-        />
+          <button
+            onClick={() => router.push("/login")}
+            className="text-sm text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Back to login
+          </button>
 
-        <button
-          onClick={handleUpdatePassword}
-          className="w-full mt-4 bg-gradient-to-r from-violet-500/80 to-blue-500/80 p-3 rounded-lg hover:from-violet-500 hover:to-blue-500 transition"
-        >
-          Update Password
-        </button>
+        </div>
 
-        {message && (
-          <p className="text-gray-300 text-sm mt-4">
-            {message}
+        <div className="mb-8">
+
+          <p className="text-sm text-[#5F7F91] font-medium mb-3">
+            Account
           </p>
-        )}
+
+          <h1 className="text-4xl font-bold tracking-tight">
+            Create a new password
+          </h1>
+
+          <p className="text-[#6F7782] mt-3 leading-relaxed max-w-lg">
+            Choose a new password for your STEM Forge account.
+          </p>
+
+        </div>
+
+        <div className="bg-white border border-[#DFE1DE] rounded-2xl p-8 shadow-sm">
+
+          <div>
+
+            <label className="block text-sm font-medium mb-2">
+              New Password
+            </label>
+
+            <input
+              type="password"
+              placeholder="Enter a new password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3.5 rounded-lg bg-[#F8F8F6] border border-[#DFE1DE] outline-none placeholder:text-[#9BA2AA] focus:border-[#5F7F91] transition"
+            />
+
+            <p className="text-xs text-[#8C939D] mt-2">
+              Password must be at least 6 characters.
+            </p>
+
+          </div>
+
+          <button
+            onClick={handleUpdatePassword}
+            className="w-full mt-6 py-3.5 rounded-lg bg-[#202733] text-white font-medium hover:bg-[#303948] transition"
+          >
+            Update Password
+          </button>
+
+          {message && (
+            <p
+              className={`text-sm mt-5 ${
+                message === "Password updated successfully!"
+                  ? "text-[#5F7F91]"
+                  : "text-red-500"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+
+        </div>
 
       </div>
 

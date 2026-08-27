@@ -1,311 +1,339 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import { IBM_Plex_Sans } from "next/font/google";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
-const goalOptions = [
-  "Find Teammates",
-  "Build a Project",
-  "Join a Project",
-  "Conduct Research",
-  "Find a Mentor",
-  "Start a Startup",
-  "Participate in Competitions",
-  "Build a Portfolio",
-];
+function toArray(value: any): string[] {
+  if (Array.isArray(value)) {
+    return value.filter(Boolean).map(String);
+  }
 
-const skillOptions = [
-  "Programming",
-  "Mathematics",
-  "Physics",
-  "Biology",
-  "Chemistry",
-  "Research",
-  "Engineering",
-  "Artificial Intelligence",
-  "Robotics",
-  "Data Science",
-  "Entrepreneurship",
-  "Design",
-  "Public Speaking",
-  "Leadership",
-];
+  if (typeof value === "string") {
+    const trimmed = value.trim();
 
-export const logoFont = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["700"],
-});
+    if (!trimmed) {
+      return [];
+    }
 
+    try {
+      const parsed = JSON.parse(trimmed);
+
+      if (Array.isArray(parsed)) {
+        return parsed.filter(Boolean).map(String);
+      }
+    } catch {
+      return trimmed
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  }
+
+  return [];
+}
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
 
+  const [user, setUser] = useState<any>(null);
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
-  const [interests, setInterests] = useState("");
+  const [interests, setInterests] = useState<string[]>([]);
   const [goals, setGoals] = useState<string[]>([]);
-  const router = useRouter();
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkProfile();
+    loadProfile();
   }, []);
 
-  async function getUserAndProfile() {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  async function loadProfile() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) return;
+    if (!user) {
+      router.push("/login");
+      return;
+    }
 
-  setUser(user);
+    setUser(user);
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
 
-  if (error || !data) return;
+    if (profileError) {
+      console.error(profileError);
+    }
 
-  setName(data.full_name || "");
-  setBio(data.bio || "");
+    if (profile) {
+      setName(profile.full_name || "");
+      setBio(profile.bio || "");
+      setSkills(toArray(profile.skills));
+      setInterests(toArray(profile.interests));
+      setGoals(toArray(profile.goals));
+    }
 
-  if (Array.isArray(data.skills)) {
-    setSkills(data.skills);
+    const { data: projectData, error: projectError } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("owner_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (projectError) {
+      console.error(projectError);
+    }
+
+    setProjects(projectData || []);
+    setLoading(false);
   }
 
-  if (Array.isArray(data.goals)) {
-    setGoals(data.goals);
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#F5F4F0] text-[#202733] flex items-center justify-center">
+        <p className="text-[#6F7782]">Loading profile...</p>
+      </main>
+    );
   }
-
-  if (Array.isArray(data.interests)) {
-    setInterests(data.interests.join(", "));
-  }
-}
-
-  function toggleGoal(goal: string) {
-  if (goals.includes(goal)) {
-    setGoals(goals.filter((item) => item !== goal));
-  } else {
-    setGoals([...goals, goal]);
-  }
-}
-
-  function toggleSkill(skill: string) {
-  if (skills.includes(skill)) {
-    setSkills(skills.filter((item) => item !== skill));
-  } else {
-    setSkills([...skills, skill]);
-  }
-}
-
-  async function checkProfile() {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    router.push("/login");
-    return;
-  }
-
-  setUser(user);
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("id")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (profile) {
-    router.push("/dashboard");
-  }
-}
-
-  async function saveProfile() {
-    if (!user) return;
-
-    const { error } = await supabase
-    .from("profiles")
-    .upsert({
-      id: user.id,
-      full_name: name,
-      skills: skills,
-      interests: interests
-      ? interests.split(",").map((item) => item.trim())
-      : [],
-    goals: goals,
-    });
-
-  if (error) {
-  console.error(error);
-  return;
-  }
-
-  alert("Profile saved!");
-
-  router.push("/dashboard");}
 
   return (
-    <main className="min-h-screen bg-[#0D1117] text-white px-6 py-12">
+    <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-8">
 
-      <div className="max-w-2xl mx-auto">
+      <nav className="max-w-6xl mx-auto flex items-center justify-between">
 
-        <div className="mb-8">           
-          <h1
-            className={`${logoFont.className} text-2xl font-bold tracking-tight bg-linear-to-r from-violet-500/70 to-blue-500/70 bg-clip-text text-transparent`}>
-            STEM Forge
-          </h1>
-
-          <h1 className="text-4xl font-bold">
-            My Profile
-          </h1>
-
-          <p className="text-gray-400 mt-2">
-            Tell the community about yourself.
-          </p>
-        </div>
-
-
-        <div className="bg-[#161B22] border border-gray-800 rounded-2xl p-8">
-
-          <div className="mb-6">
-
-            <p className="text-sm text-gray-500">
-              ACCOUNT
-            </p>
-
-            <p className="mt-2 text-gray-300">
-              {user?.email}
-            </p>
-
-          </div>
-
-
-          <div className="mb-6">
-
-            <label className="block text-sm text-gray-400 mb-2">
-              Full Name
-            </label>
-
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
-              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
-            />
-
-          </div>
-
-
-          <div className="mb-6">
-
-            <label className="block text-sm text-gray-400 mb-2">
-              About Me
-            </label>
-
-            <textarea
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              placeholder="Tell other students about yourself..."
-              rows={4}
-              className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500"
-            />
-
-          </div>
-
-
-          <div className="mb-8">
-
-  <label className="block text-sm text-gray-400 mb-3">
-    Skills
-  </label>
-
-  <div className="flex flex-wrap gap-3">
-
-    {skillOptions.map((skill) => (
-      <button
-        key={skill}
-        type="button"
-        onClick={() => toggleSkill(skill)}
-        className={`px-4 py-2 rounded-full border transition ${
-        skills.includes(skill)
-          ? "bg-gradient-to-r from-violet-500/70 to-blue-500/70 border-violet-400/50 text-white"
-          : "border-gray-700 text-gray-300 hover:border-purple-500"
-          }`} >
-          {skill}
+        <button
+          onClick={() => router.push("/")}
+          className="text-xl font-bold tracking-tight hover:text-[#5F7F91] transition"
+        >
+          STEM Forge
         </button>
-      ))}
 
-    </div>
-
-  </div>
-
-
-          <div className="mb-8">
-
-            <label className="block text-sm text-gray-400 mb-2">
-              Interests
-            </label>
-
-          <textarea
-            value={interests}
-            onChange={(e) => setInterests(e.target.value)}
-            placeholder="Tell us what you're interested in..."
-            rows={3}
-            className="w-full bg-[#0D1117] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-purple-500 resize-none"
-          />
-
-          <p className="text-gray-500 text-sm mt-2">
-            You can write anything — from space exploration to cancer research.
-          </p>
-
-        </div>
-
-
-          <div className="mb-8">
-
-  <label className="block text-sm text-gray-400 mb-3">
-    Goals
-  </label>
-
-  <div className="flex flex-wrap gap-3">
-
-    {goalOptions.map((goal) => (
-      <button
-        key={goal}
-        type="button"
-        onClick={() => toggleGoal(goal)}
-        className={`px-4 py-2 rounded-full border transition ${
-          goals.includes(goal)
-            ? "bg-gradient-to-r from-violet-500/50 to-blue-500/50 border-violet-400/40 text-white"
-            : "border-gray-700 text-gray-300 hover:border-purple-500"
-        }`}
-      >
-        {goal}
-      </button>
-    ))}
-
-    </div>
-
-  </div>
-
+        <div className="flex items-center gap-7">
 
           <button
-            onClick={saveProfile}
-            className="w-full bg-[#8B5CF6] py-3 rounded-lg hover:bg-purple-700 transition"
+            onClick={() => router.push("/dashboard")}
+            className="text-[#6F7782] hover:text-[#202733] transition"
           >
-            Save Profile
+            Dashboard
+          </button>
+
+          <button
+            onClick={() => router.push("/projects")}
+            className="text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Projects
+          </button>
+
+          <button
+            onClick={() => router.push("/learn")}
+            className="text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Learn
+          </button>
+
+          <button
+            onClick={() => router.push("/profile")}
+            className="text-[#202733] font-medium"
+          >
+            Profile
           </button>
 
         </div>
 
-      </div>
+      </nav>
+
+      <section className="max-w-4xl mx-auto mt-16 pb-20">
+
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+          <div>
+            <p className="text-sm text-[#5F7F91] font-medium mb-2">
+              Profile
+            </p>
+
+            <h1 className="text-4xl font-bold tracking-tight">
+              {name || "Your Profile"}
+            </h1>
+
+            <p className="text-[#6F7782] mt-2">
+              {user?.email}
+            </p>
+          </div>
+
+          <button
+            onClick={() => router.push("/profile/edit")}
+            className="w-fit px-5 py-3 rounded-lg bg-[#202733] text-white font-medium hover:bg-[#303948] transition"
+          >
+            Edit Profile
+          </button>
+
+        </div>
+
+        <div className="mt-10 space-y-5">
+
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-7 shadow-sm">
+
+            <h2 className="text-xl font-semibold">
+              About Me
+            </h2>
+
+            <p className="text-[#6F7782] mt-3 leading-relaxed">
+              {bio || "No bio yet."}
+            </p>
+
+          </div>
+
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-7 shadow-sm">
+
+            <h2 className="text-xl font-semibold">
+              Skills
+            </h2>
+
+            {skills.length > 0 ? (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1.5 rounded-lg bg-[#E8EFF2] text-[#526C7A] text-sm"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[#6F7782] mt-3">
+                No skills added yet.
+              </p>
+            )}
+
+          </div>
+
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-7 shadow-sm">
+
+            <h2 className="text-xl font-semibold">
+              Interests
+            </h2>
+
+            {interests.length > 0 ? (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {interests.map((interest, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1.5 rounded-lg border border-[#D9DDDA] text-[#6F7782] text-sm"
+                  >
+                    {interest}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[#6F7782] mt-3">
+                No interests added yet.
+              </p>
+            )}
+
+          </div>
+
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-7 shadow-sm">
+
+            <h2 className="text-xl font-semibold">
+              Goals
+            </h2>
+
+            {goals.length > 0 ? (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {goals.map((goal, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1.5 rounded-lg bg-[#E8EFF2] text-[#526C7A] text-sm"
+                  >
+                    {goal}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[#6F7782] mt-3">
+                No goals added yet.
+              </p>
+            )}
+
+          </div>
+
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-7 shadow-sm">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm text-[#5F7F91] font-medium">
+                  Your work
+                </p>
+
+                <h2 className="text-2xl font-bold mt-1">
+                  Projects
+                </h2>
+              </div>
+
+              <span className="text-2xl font-bold">
+                {projects.length}
+              </span>
+
+            </div>
+
+            {projects.length === 0 ? (
+              <div className="mt-6">
+
+                <p className="text-[#6F7782]">
+                  You haven't created any projects yet.
+                </p>
+
+                <button
+                  onClick={() => router.push("/projects/create")}
+                  className="mt-5 px-5 py-2.5 rounded-lg bg-[#202733] text-white hover:bg-[#303948] transition"
+                >
+                  Create Project
+                </button>
+
+              </div>
+            ) : (
+              <div className="mt-6 space-y-3">
+
+                {projects.slice(0, 3).map((project) => (
+                  <div
+                    key={project.id}
+                    className="border border-[#E5E6E2] rounded-lg p-4"
+                  >
+                    <h3 className="font-semibold">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-sm text-[#6F7782] mt-1">
+                      {project.description}
+                    </p>
+                  </div>
+                ))}
+
+                {projects.length > 3 && (
+                  <button
+                    onClick={() => router.push("/projects")}
+                    className="text-sm text-[#5F7F91] hover:text-[#202733] transition pt-2"
+                  >
+                    View all projects →
+                  </button>
+                )}
+
+              </div>
+            )}
+
+          </div>
+
+        </div>
+
+      </section>
 
     </main>
   );
 }
-

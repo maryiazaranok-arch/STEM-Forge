@@ -27,37 +27,43 @@ export default function ProjectsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F0E8] text-[#2C211B] px-6 py-8">
+    <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-8">
 
-      {/* Navigation */}
       <nav className="max-w-6xl mx-auto flex items-center justify-between">
 
         <button
-          onClick={() => router.push("/dashboard")}
-          className="text-xl font-bold tracking-tight text-[#2C211B] hover:text-[#8A5A3B] transition"
+          onClick={() => router.push("/")}
+          className="text-xl font-bold tracking-tight hover:text-[#5F7F91] transition"
         >
           STEM Forge
         </button>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-7">
 
           <button
             onClick={() => router.push("/dashboard")}
-            className="text-[#796B60] hover:text-[#8A5A3B] transition"
+            className="text-[#6F7782] hover:text-[#202733] transition"
           >
             Dashboard
           </button>
 
           <button
             onClick={() => router.push("/projects")}
-            className="text-[#2C211B] font-medium"
+            className="text-[#202733] font-medium"
           >
             Projects
           </button>
 
           <button
+            onClick={() => router.push("/learn")}
+            className="text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Learn
+          </button>
+
+          <button
             onClick={() => router.push("/profile")}
-            className="text-[#796B60] hover:text-[#8A5A3B] transition"
+            className="text-[#6F7782] hover:text-[#202733] transition"
           >
             Profile
           </button>
@@ -66,61 +72,63 @@ export default function ProjectsPage() {
 
       </nav>
 
-      {/* Hero */}
-      <section className="max-w-6xl mx-auto mt-24">
+      <section className="max-w-6xl mx-auto mt-16">
 
-        <div className="max-w-2xl">
+        <p className="text-sm text-[#5F7F91] font-medium mb-3">
+          Projects
+        </p>
 
-          <p className="text-sm uppercase tracking-[0.2em] text-[#8A5A3B] font-medium mb-4">
-            Discover & Build
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
 
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight">
-            Explore Projects
-          </h1>
+          <div>
 
-          <p className="text-lg text-[#796B60] mt-5 max-w-xl leading-relaxed">
-            Discover ideas, find talented teammates, and build something
-            meaningful together.
-          </p>
+            <h1 className="text-4xl font-bold tracking-tight">
+              Explore Projects
+            </h1>
+
+            <p className="text-[#6F7782] mt-3 max-w-xl leading-relaxed">
+              Discover ideas, find teammates, and build something together.
+            </p>
+
+          </div>
+
+          <button
+            onClick={() => router.push("/projects/create")}
+            className="w-fit px-5 py-3 rounded-lg bg-[#202733] text-white font-medium hover:bg-[#303948] transition"
+          >
+            + Create Project
+          </button>
 
         </div>
 
-        <button
-          onClick={() => router.push("/projects/create")}
-          className="mt-9 px-6 py-3 rounded-full bg-[#8A5A3B] text-white font-medium shadow-md shadow-[#8A5A3B]/15 hover:bg-[#68422D] hover:-translate-y-0.5 transition-all"
-        >
-          + Create Project
-        </button>
-
       </section>
 
-      {/* Projects */}
-      <section className="max-w-6xl mx-auto mt-20 pb-20">
+      <section className="max-w-6xl mx-auto mt-12 pb-20">
 
         {projects.length === 0 ? (
 
-          <div className="bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-12 text-center shadow-sm">
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-10 shadow-sm">
 
-            <div className="w-14 h-14 mx-auto rounded-full bg-[#EFE4D6] flex items-center justify-center mb-6">
-              <span className="text-xl text-[#8A5A3B]">
-                ✦
-              </span>
-            </div>
-
-            <h2 className="text-2xl font-bold">
+            <h2 className="text-2xl font-semibold">
               No projects yet
             </h2>
 
-            <p className="text-[#796B60] mt-3">
-              Be the first to create something on STEM Forge.
+            <p className="text-[#6F7782] mt-2">
+              Be the first to create a project on STEM Forge.
             </p>
+
+            <button
+              onClick={() => router.push("/projects/create")}
+              className="mt-5 px-5 py-2.5 rounded-lg bg-[#5F7F91] text-white hover:bg-[#4E6B7A] transition"
+            >
+              Create Project
+            </button>
 
           </div>
 
         ) : (
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-5">
 
             {projects.map((project) => {
 
@@ -134,32 +142,24 @@ export default function ProjectsPage() {
               return (
                 <div
                   key={project.id}
-                  className="group bg-[#FFFDF8] border border-[#E5D9CA] rounded-3xl p-7 shadow-sm hover:shadow-lg hover:shadow-[#8A5A3B]/10 hover:-translate-y-1 hover:border-[#CDBBA7] transition-all"
+                  className="bg-white border border-[#DFE1DE] rounded-xl p-6 shadow-sm hover:border-[#C9D4D9] hover:shadow-md transition"
                 >
 
-                  <div className="flex items-start justify-between gap-4">
+                  <h2 className="text-xl font-semibold">
+                    {project.title}
+                  </h2>
 
-                    <h2 className="text-2xl font-bold leading-tight">
-                      {project.title}
-                    </h2>
-
-                    <span className="text-[#8A5A3B] text-xl opacity-0 group-hover:opacity-100 transition">
-                      →
-                    </span>
-
-                  </div>
-
-                  <p className="text-[#796B60] mt-4 leading-relaxed line-clamp-3">
+                  <p className="text-[#6F7782] mt-3 leading-relaxed">
                     {project.description}
                   </p>
 
                   {skills && skills.length > 0 && (
-                    <div className="mt-6 flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 mt-5">
 
                       {skills.map((skill: string, index: number) => (
                         <span
                           key={index}
-                          className="px-3 py-1.5 rounded-full bg-[#EFE4D6] text-[#68422D] text-sm font-medium"
+                          className="px-3 py-1.5 rounded-lg bg-[#EAF1F4] text-[#4E6B7A] text-sm"
                         >
                           {skill}
                         </span>
@@ -168,14 +168,15 @@ export default function ProjectsPage() {
                     </div>
                   )}
 
-                  <div className="mt-8 pt-5 border-t border-[#EDE3D8] flex items-center justify-between">
+                  <div className="mt-6 pt-5 border-t border-[#E5E6E2] flex items-center justify-between">
 
-                    <span className="text-sm text-[#9A8C80]">
+                    <span className="text-sm text-[#8C939D]">
                       STEM Project
                     </span>
 
                     <button
-                      className="text-sm font-medium text-[#8A5A3B] hover:text-[#68422D] transition"
+                      onClick={() => router.push(`/projects/${project.id}`)}
+                      className="text-sm font-medium text-[#5F7F91] hover:text-[#202733] transition"
                     >
                       View project →
                     </button>
