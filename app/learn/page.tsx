@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function LearnPage() {
   const router = useRouter();
@@ -27,6 +28,11 @@ export default function LearnPage() {
       description: "Learn programming, algorithms, and problem solving.",
     },
   ];
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
 
   return (
     <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-8">
@@ -70,6 +76,13 @@ export default function LearnPage() {
             Profile
           </button>
 
+          <button
+            onClick={handleLogout}
+            className="text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Logout
+          </button>
+
         </div>
 
       </nav>
@@ -98,7 +111,11 @@ export default function LearnPage() {
           {subjects.map((subject) => (
             <button
               key={subject.title}
-              onClick={() => router.push(`/learn/${subject.title.toLowerCase().replaceAll(" ", "-")}`)}
+              onClick={() =>
+                router.push(
+                  `/learn/${subject.title.toLowerCase().replaceAll(" ", "-")}`
+                )
+              }
               className="text-left bg-white border border-[#DFE1DE] rounded-xl p-6 shadow-sm hover:border-[#C9D4D9] hover:shadow-md transition"
             >
 

@@ -93,6 +93,11 @@ export default function ProfilePage() {
     setLoading(false);
   }
 
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
+
   if (loading) {
     return (
       <main className="min-h-screen bg-[#F5F4F0] text-[#202733] flex items-center justify-center">
@@ -141,6 +146,13 @@ export default function ProfilePage() {
             className="text-[#202733] font-medium"
           >
             Profile
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Logout
           </button>
 
         </div>

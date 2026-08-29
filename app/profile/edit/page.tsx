@@ -110,8 +110,7 @@ export default function EditProfilePage() {
 
     const { error } = await supabase
       .from("profiles")
-      .upsert({
-        id: user.id,
+      .update({
         full_name: name,
         bio: bio,
         skills: skills,
@@ -122,7 +121,8 @@ export default function EditProfilePage() {
               .filter(Boolean)
           : [],
         goals: goals,
-      });
+      })
+      .eq("id", user.id);
 
     if (error) {
       console.error(error);
@@ -133,6 +133,11 @@ export default function EditProfilePage() {
 
     alert("Profile saved!");
     router.push("/profile");
+  }
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
   }
 
   if (loading) {
@@ -183,6 +188,13 @@ export default function EditProfilePage() {
             className="text-[#202733] font-medium"
           >
             Profile
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Logout
           </button>
 
         </div>

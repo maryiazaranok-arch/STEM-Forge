@@ -26,6 +26,11 @@ export default function ProjectsPage() {
     setProjects(data || []);
   }
 
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
+
   return (
     <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-8">
 
@@ -66,6 +71,13 @@ export default function ProjectsPage() {
             className="text-[#6F7782] hover:text-[#202733] transition"
           >
             Profile
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="text-[#6F7782] hover:text-[#202733] transition"
+          >
+            Logout
           </button>
 
         </div>
