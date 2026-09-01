@@ -11,41 +11,49 @@ export default function MathematicsPage() {
       title: "Algebra",
       description: "Equations, functions, graphs, and algebraic thinking.",
       level: "Start here",
+      topic: "algebra",
     },
     {
       title: "Geometry",
       description: "Shapes, coordinates, proofs, and spatial reasoning.",
       level: "Foundation",
+      topic: "geometry",
     },
     {
       title: "Trigonometry",
       description: "Angles, triangles, identities, and periodic functions.",
       level: "Foundation",
+      topic: "trigonometry",
     },
     {
       title: "Calculus",
       description: "Limits, derivatives, integrals, and optimization.",
       level: "Advanced",
+      topic: "calculus",
     },
     {
       title: "Linear Algebra",
       description: "Vectors, matrices, transformations, and eigenvalues.",
       level: "Advanced",
+      topic: "linear-algebra",
     },
     {
       title: "Probability & Statistics",
-      description: "Probability, distributions, data, and inference.",
+      description: "Probability, distributions, data analysis, and inference.",
       level: "Advanced",
+      topic: "probability",
     },
     {
       title: "Number Theory",
       description: "Prime numbers, divisibility, modular arithmetic, and proofs.",
       level: "Problem solving",
+      topic: "number-theory",
     },
     {
       title: "Problem Solving",
       description: "Learn how to approach difficult mathematical problems.",
       level: "Olympiad",
+      topic: "problem-solving",
     },
   ];
 
@@ -53,29 +61,29 @@ export default function MathematicsPage() {
     {
       name: "Khan Academy",
       description:
-        "A good starting point for learning mathematics step by step and practicing each topic.",
+        "Step-by-step lessons and practice for mathematics.",
       bestFor: "Learning + practice",
       link: "https://www.khanacademy.org/math",
     },
     {
       name: "MIT OpenCourseWare",
       description:
-        "University-level courses with lectures, notes, assignments, and problem sets.",
+        "University-level mathematics courses and problem sets.",
       bestFor: "Deep understanding",
       link: "https://ocw.mit.edu/search/?d=Mathematics",
     },
     {
       name: "3Blue1Brown",
       description:
-        "Visual explanations that make difficult ideas in calculus and linear algebra easier to understand.",
+        "Visual explanations for difficult mathematical ideas.",
       bestFor: "Visual intuition",
       link: "https://www.3blue1brown.com/",
     },
     {
       name: "Art of Problem Solving",
       description:
-        "Challenging problems and resources for mathematical problem solving and competitions.",
-      bestFor: "Olympiads + problem solving",
+        "Problems and resources for advanced mathematics and competitions.",
+      bestFor: "Problem solving",
       link: "https://artofproblemsolving.com/resources",
     },
   ];
@@ -140,6 +148,13 @@ export default function MathematicsPage() {
 
       <section className="max-w-6xl mx-auto mt-16">
 
+        <button
+          onClick={() => router.push("/learn")}
+          className="text-sm text-[#5F7F91] hover:text-[#202733] transition mb-6"
+        >
+          ← Learn
+        </button>
+
         <p className="text-sm text-[#5F7F91] font-medium mb-3">
           Learn / Mathematics
         </p>
@@ -150,33 +165,36 @@ export default function MathematicsPage() {
 
         <p className="text-[#6F7782] mt-3 max-w-2xl leading-relaxed">
           Build the mathematical foundation you need for STEM projects,
-          research, and problem solving.
+          programming, science, and research.
         </p>
 
       </section>
 
       <section className="max-w-6xl mx-auto mt-12">
 
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6">
 
-          <div>
-            <p className="text-sm text-[#5F7F91] font-medium">
-              What to learn
-            </p>
+          <p className="text-sm text-[#5F7F91] font-medium">
+            What to learn
+          </p>
 
-            <h2 className="text-2xl font-bold mt-1">
-              Core topics
-            </h2>
-          </div>
+          <h2 className="text-2xl font-bold mt-1">
+            Core topics
+          </h2>
 
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
 
           {topics.map((topic) => (
-            <div
+            <button
               key={topic.title}
-              className="bg-white border border-[#DFE1DE] rounded-xl p-6 shadow-sm"
+              onClick={() =>
+                router.push(
+                  `/learn/mathematics/topic-page?topic=${topic.topic}`
+                )
+              }
+              className="w-full text-left bg-white border border-[#DFE1DE] rounded-xl p-6 shadow-sm hover:border-[#C9D4D9] hover:shadow-md transition"
             >
 
               <div className="flex items-start justify-between gap-4">
@@ -185,7 +203,7 @@ export default function MathematicsPage() {
                   {topic.title}
                 </h3>
 
-                <span className="text-xs text-[#5F7F91] border border-[#D9DDDA] rounded-lg px-2.5 py-1">
+                <span className="text-xs text-[#5F7F91] border border-[#D9DDDA] rounded-lg px-2.5 py-1 whitespace-nowrap">
                   {topic.level}
                 </span>
 
@@ -195,7 +213,11 @@ export default function MathematicsPage() {
                 {topic.description}
               </p>
 
-            </div>
+              <p className="text-sm text-[#5F7F91] font-medium mt-5">
+                Explore →
+              </p>
+
+            </button>
           ))}
 
         </div>
@@ -215,8 +237,7 @@ export default function MathematicsPage() {
           </h2>
 
           <p className="text-[#6F7782] mt-2">
-            All resources are in English and are useful for independent
-            learning.
+            Free English-language resources for independent learning.
           </p>
 
         </div>
@@ -272,8 +293,8 @@ export default function MathematicsPage() {
           </h2>
 
           <p className="text-[#6F7782] mt-3 max-w-2xl leading-relaxed">
-            Once you have the basics, explore projects that use mathematics
-            in programming, science, data analysis, and research.
+            Use mathematics in programming, science, engineering, data
+            analysis, and research projects.
           </p>
 
           <button
