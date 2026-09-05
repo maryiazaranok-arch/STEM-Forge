@@ -1,65 +1,68 @@
-"use client";
+"use client"
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { useRouter, useSearchParams } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 const topicData: Record<
   string,
   {
-    title: string;
-    description: string;
-    topics: string[];
-    resources: {
-      name: string;
-      description: string;
-      link: string;
-    }[];
-    usefulFor: string[];
+    title: string
+    description: string
+    learn: string[]
+    order: string[]
+    resources: { name: string; description: string }[]
+    usefulFor: string[]
   }
 > = {
   algebra: {
     title: "Algebra",
     description:
-      "Build the foundation for functions, equations, mathematical modeling, and programming.",
-    topics: [
+      "Build the foundations for solving equations, understanding functions, and modeling real problems.",
+    learn: [
       "Equations and inequalities",
       "Systems of equations",
       "Polynomials",
       "Functions",
       "Exponents and logarithms",
-      "Graphs",
+      "Graphs and transformations",
       "Mathematical modeling",
+    ],
+    order: [
+      "Equations and inequalities",
+      "Functions and graphs",
+      "Systems of equations",
+      "Polynomials",
+      "Exponents and logarithms",
+      "Modeling",
     ],
     resources: [
       {
         name: "Khan Academy",
-        description: "Step-by-step algebra lessons and practice.",
-        link: "https://www.khanacademy.org/math/algebra",
+        description: "Structured lessons, explanations, and practice problems.",
       },
       {
         name: "MIT OpenCourseWare",
-        description: "University-level mathematics materials.",
-        link: "https://ocw.mit.edu/search/?d=Mathematics",
+        description: "University-level mathematics courses and materials.",
       },
       {
-        name: "Art of Problem Solving",
-        description: "More challenging algebra problems.",
-        link: "https://artofproblemsolving.com/resources",
+        name: "3Blue1Brown",
+        description: "Visual explanations of mathematical ideas.",
       },
     ],
     usefulFor: [
+      "Mathematical modeling",
       "Programming",
-      "Data analysis",
-      "Scientific modeling",
-      "Engineering",
+      "Physics",
+      "Data science",
+      "Competitions",
     ],
   },
 
   geometry: {
     title: "Geometry",
     description:
-      "Develop spatial reasoning, coordinate geometry, and mathematical proof skills.",
-    topics: [
+      "Understand shapes, spatial relationships, proofs, coordinates, and transformations.",
+    learn: [
       "Angles and triangles",
       "Circles",
       "Polygons",
@@ -68,65 +71,79 @@ const topicData: Record<
       "Vectors",
       "Geometric proofs",
     ],
+    order: [
+      "Angles and basic constructions",
+      "Triangles",
+      "Circles and polygons",
+      "Coordinate geometry",
+      "Transformations",
+      "Proofs",
+      "Vectors",
+    ],
     resources: [
       {
         name: "Khan Academy",
-        description: "Interactive geometry lessons and practice.",
-        link: "https://www.khanacademy.org/math/geometry",
+        description: "Geometry lessons with practice and visual explanations.",
       },
       {
         name: "Art of Problem Solving",
-        description: "Challenging geometry problems.",
-        link: "https://artofproblemsolving.com/resources",
+        description: "Challenging geometry problems and olympiad techniques.",
       },
       {
         name: "MIT OpenCourseWare",
-        description: "University mathematics resources.",
-        link: "https://ocw.mit.edu/search/?d=Mathematics",
+        description: "More advanced mathematical and geometric topics.",
       },
     ],
     usefulFor: [
+      "Physics",
+      "Engineering",
       "Computer graphics",
       "Robotics",
-      "Physics",
-      "3D modeling",
+      "Olympiads",
     ],
   },
 
   trigonometry: {
     title: "Trigonometry",
     description:
-      "Learn how angles and periodic functions connect mathematics with physics and engineering.",
-    topics: [
-      "Right-triangle trigonometry",
-      "Sine and cosine",
-      "Tangent",
+      "Learn how angles and triangles connect to waves, geometry, physics, and periodic systems.",
+    learn: [
+      "Right triangle trigonometry",
+      "Sine, cosine, and tangent",
       "Unit circle",
       "Trigonometric identities",
       "Radians",
       "Graphs of trigonometric functions",
+      "Applications",
+    ],
+    order: [
+      "Right triangle trigonometry",
+      "Sine, cosine, tangent",
+      "Unit circle",
+      "Radians",
+      "Identities",
+      "Graphs",
+      "Applications",
     ],
     resources: [
       {
         name: "Khan Academy",
-        description: "Structured trigonometry lessons and practice.",
-        link: "https://www.khanacademy.org/math/trigonometry",
+        description: "Step-by-step trigonometry lessons and practice.",
       },
       {
         name: "3Blue1Brown",
-        description: "Visual mathematical explanations.",
-        link: "https://www.3blue1brown.com/",
+        description: "Visual intuition for sine, cosine, and periodic functions.",
       },
       {
-        name: "Art of Problem Solving",
-        description: "Challenging mathematical problems.",
-        link: "https://artofproblemsolving.com/resources",
+        name: "MIT OpenCourseWare",
+        description: "More advanced mathematical applications.",
       },
     ],
     usefulFor: [
-      "Physics simulations",
-      "Robotics",
+      "Physics",
       "Engineering",
+      "Signal processing",
+      "Robotics",
       "Computer graphics",
     ],
   },
@@ -134,8 +151,8 @@ const topicData: Record<
   calculus: {
     title: "Calculus",
     description:
-      "Understand change, motion, accumulation, optimization, and mathematical modeling.",
-    topics: [
+      "Study change, accumulation, optimization, and mathematical models of real systems.",
+    learn: [
       "Limits",
       "Derivatives",
       "Applications of derivatives",
@@ -145,66 +162,78 @@ const topicData: Record<
       "Optimization",
       "Differential equations",
     ],
+    order: [
+      "Functions review",
+      "Limits",
+      "Derivatives",
+      "Applications of derivatives",
+      "Integrals",
+      "Applications of integrals",
+      "Sequences and series",
+      "Differential equations",
+    ],
     resources: [
       {
         name: "Khan Academy",
-        description: "Lessons and practice for calculus.",
-        link: "https://www.khanacademy.org/math/calculus-1",
+        description: "Complete calculus pathway with theory and practice.",
       },
       {
         name: "MIT OpenCourseWare",
-        description: "University-level calculus materials.",
-        link: "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/",
+        description: "University-level calculus courses.",
       },
       {
         name: "3Blue1Brown",
-        description: "Visual explanations of calculus.",
-        link: "https://www.3blue1brown.com/topics/calculus",
+        description: "Visual intuition for derivatives and integrals.",
       },
     ],
     usefulFor: [
       "Physics",
+      "Machine learning",
+      "Artificial intelligence",
       "Optimization",
-      "AI and machine learning",
-      "Scientific simulations",
-      "Population models",
+      "Scientific research",
     ],
   },
 
   "linear-algebra": {
     title: "Linear Algebra",
     description:
-      "Learn the mathematics behind vectors, matrices, transformations, and computational methods.",
-    topics: [
+      "Learn vectors, matrices, transformations, and the mathematics behind modern computing.",
+    learn: [
+      "Vectors",
+      "Matrices",
+      "Systems of linear equations",
+      "Vector spaces",
+      "Linear transformations",
+      "Eigenvalues and eigenvectors",
+      "Matrix applications",
+    ],
+    order: [
       "Vectors",
       "Matrices",
       "Linear systems",
-      "Matrix transformations",
       "Vector spaces",
-      "Eigenvalues and eigenvectors",
       "Linear transformations",
+      "Eigenvalues and eigenvectors",
     ],
     resources: [
       {
-        name: "MIT OpenCourseWare",
-        description: "Complete university-level linear algebra materials.",
-        link: "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/",
+        name: "3Blue1Brown",
+        description: "Visual introduction to linear algebra.",
       },
       {
-        name: "3Blue1Brown",
-        description: "Visual explanations of linear algebra.",
-        link: "https://www.3blue1brown.com/topics/linear-algebra",
+        name: "MIT OpenCourseWare",
+        description: "University-level linear algebra courses.",
       },
       {
         name: "Khan Academy",
-        description: "Interactive linear algebra lessons.",
-        link: "https://www.khanacademy.org/math/linear-algebra",
+        description: "Practice and foundational explanations.",
       },
     ],
     usefulFor: [
       "Machine learning",
       "Computer graphics",
-      "Computer vision",
+      "Robotics",
       "Physics",
       "Data science",
     ],
@@ -213,8 +242,8 @@ const topicData: Record<
   probability: {
     title: "Probability & Statistics",
     description:
-      "Learn how to reason about uncertainty, analyze data, and understand statistical evidence.",
-    topics: [
+      "Understand uncertainty, data, distributions, inference, and mathematical decision-making.",
+    learn: [
       "Basic probability",
       "Conditional probability",
       "Random variables",
@@ -222,336 +251,288 @@ const topicData: Record<
       "Expected value",
       "Hypothesis testing",
       "Confidence intervals",
-      "Linear regression",
+      "Regression",
+    ],
+    order: [
+      "Basic probability",
+      "Conditional probability",
+      "Random variables",
+      "Distributions",
+      "Expected value",
+      "Statistical inference",
+      "Regression",
     ],
     resources: [
       {
         name: "Khan Academy",
-        description: "Probability and statistics lessons and practice.",
-        link: "https://www.khanacademy.org/math/statistics-probability",
+        description: "Probability and statistics courses with practice.",
       },
       {
         name: "MIT OpenCourseWare",
         description: "University-level probability and statistics.",
-        link: "https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/",
       },
       {
         name: "Art of Problem Solving",
-        description: "Probability and counting problems.",
-        link: "https://artofproblemsolving.com/resources",
+        description: "Interesting probability problems and problem solving.",
       },
     ],
     usefulFor: [
       "Data science",
+      "Artificial intelligence",
+      "Machine learning",
       "Scientific research",
-      "AI and machine learning",
       "Experiments",
-      "Data analysis",
     ],
   },
 
   "number-theory": {
     title: "Number Theory",
     description:
-      "Explore the properties of integers and develop strong mathematical problem-solving skills.",
-    topics: [
+      "Explore integers, primes, divisibility, modular arithmetic, and mathematical proofs.",
+    learn: [
       "Prime numbers",
       "Divisibility",
       "Greatest common divisor",
       "Modular arithmetic",
       "Diophantine equations",
       "Congruences",
-      "Number-theoretic proofs",
+      "Proof techniques",
+    ],
+    order: [
+      "Divisibility",
+      "Prime numbers",
+      "GCD and Euclidean algorithm",
+      "Modular arithmetic",
+      "Congruences",
+      "Diophantine equations",
+      "Proofs",
     ],
     resources: [
       {
         name: "Art of Problem Solving",
-        description: "Number theory problems and resources.",
-        link: "https://artofproblemsolving.com/resources",
+        description: "Excellent number theory problems and olympiad material.",
       },
       {
         name: "Khan Academy",
-        description: "Foundational mathematics practice.",
-        link: "https://www.khanacademy.org/math",
+        description: "Foundational explanations and practice.",
       },
       {
         name: "MIT OpenCourseWare",
-        description: "Broader mathematics resources.",
-        link: "https://ocw.mit.edu/search/?d=Mathematics",
+        description: "More advanced mathematical material.",
       },
     ],
     usefulFor: [
-      "Algorithms",
+      "Mathematical competitions",
       "Cryptography",
-      "Programming",
-      "Olympiad mathematics",
+      "Algorithms",
+      "Proofs",
+      "Theoretical computer science",
     ],
   },
 
   "problem-solving": {
     title: "Problem Solving",
     description:
-      "Develop the ability to approach unfamiliar mathematical problems and reason creatively.",
-    topics: [
+      "Develop the reasoning skills needed to solve unfamiliar mathematical and scientific problems.",
+    learn: [
       "Logical reasoning",
       "Proof strategies",
       "Combinatorics",
-      "Creative problem solving",
       "Pattern recognition",
-      "Proof by contradiction",
-      "Mathematical induction",
+      "Induction",
+      "Contradiction",
+      "Creative problem solving",
+    ],
+    order: [
+      "Logical reasoning",
+      "Patterns and invariants",
+      "Proof techniques",
+      "Combinatorics",
+      "Induction",
+      "Contradiction",
+      "Olympiad-style problems",
     ],
     resources: [
       {
         name: "Art of Problem Solving",
-        description: "A large collection of mathematical problems.",
-        link: "https://artofproblemsolving.com/resources",
+        description: "Large collection of challenging competition problems.",
       },
       {
         name: "Khan Academy",
-        description: "Practice foundational mathematical concepts.",
-        link: "https://www.khanacademy.org/math",
+        description: "Foundational mathematics and problem practice.",
+      },
+      {
+        name: "3Blue1Brown",
+        description: "Visual mathematical intuition and explanations.",
       },
     ],
     usefulFor: [
-      "Mathematical competitions",
+      "Olympiads",
       "Research",
       "Programming",
-      "Algorithms",
-      "Scientific reasoning",
+      "Competitive programming",
+      "Any STEM project",
     ],
   },
-};
+}
 
 export default function TopicPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
-  const topic = searchParams.get("topic");
-  const data = topic ? topicData[topic] : null;
+  const topic = searchParams.get("topic")
+  const data = topic ? topicData[topic] : null
 
-  async function handleLogout() {
-    await supabase.auth.signOut();
-    router.push("/login");
+  const logout = async () => {
+    await supabase.auth.signOut()
+    router.push("/")
   }
 
   if (!data) {
     return (
-      <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-10">
-        <div className="max-w-4xl mx-auto">
+      <main className="min-h-screen bg-[#F5F4F0] text-[#202733]">
+        <nav className="border-b border-[#DFE1DE] bg-white">
+          <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+            <button
+              onClick={() => router.push("/learn/mathematics")}
+              className="font-bold text-xl"
+            >
+              STEM Forge
+            </button>
 
-          <h1 className="text-3xl font-bold">
-            Topic not found
-          </h1>
+            <div className="flex items-center gap-6 text-sm">
+              <button onClick={() => router.push("/dashboard")}>
+                Dashboard
+              </button>
+              <button onClick={() => router.push("/projects")}>
+                Projects
+              </button>
+              <button onClick={() => router.push("/learn")}>Learn</button>
+              <button onClick={() => router.push("/profile")}>Profile</button>
+              <button onClick={logout}>Logout</button>
+            </div>
+          </div>
+        </nav>
 
+        <div className="max-w-4xl mx-auto px-6 py-20 text-center">
+          <h1 className="text-3xl font-bold mb-4">Topic not found</h1>
           <button
             onClick={() => router.push("/learn/mathematics")}
-            className="mt-5 px-5 py-2.5 rounded-lg bg-[#202733] text-white hover:bg-[#303948] transition"
+            className="bg-[#202733] text-white px-5 py-3 rounded-lg"
           >
             Back to Mathematics
           </button>
-
         </div>
       </main>
-    );
+    )
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-8">
-
-      <nav className="max-w-6xl mx-auto flex items-center justify-between">
-
-        <button
-          onClick={() => router.push("/")}
-          className="text-xl font-bold tracking-tight hover:text-[#5F7F91] transition"
-        >
-          STEM Forge
-        </button>
-
-        <div className="flex items-center gap-7">
-
+    <main className="min-h-screen bg-[#F5F4F0] text-[#202733]">
+      <nav className="border-b border-[#DFE1DE] bg-white">
+        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <button
-            onClick={() => router.push("/dashboard")}
-            className="text-[#6F7782] hover:text-[#202733] transition"
+            onClick={() => router.push("/learn/mathematics")}
+            className="font-bold text-xl"
           >
-            Dashboard
+            STEM Forge
           </button>
 
-          <button
-            onClick={() => router.push("/projects")}
-            className="text-[#6F7782] hover:text-[#202733] transition"
-          >
-            Projects
-          </button>
-
-          <button
-            onClick={() => router.push("/learn")}
-            className="text-[#202733] font-medium"
-          >
-            Learn
-          </button>
-
-          <button
-            onClick={() => router.push("/profile")}
-            className="text-[#6F7782] hover:text-[#202733] transition"
-          >
-            Profile
-          </button>
-
-          <button
-            onClick={handleLogout}
-            className="text-[#6F7782] hover:text-[#202733] transition"
-          >
-            Logout
-          </button>
-
+          <div className="flex items-center gap-6 text-sm">
+            <button onClick={() => router.push("/dashboard")}>
+              Dashboard
+            </button>
+            <button onClick={() => router.push("/projects")}>Projects</button>
+            <button onClick={() => router.push("/learn")}>Learn</button>
+            <button onClick={() => router.push("/profile")}>Profile</button>
+            <button onClick={logout}>Logout</button>
+          </div>
         </div>
-
       </nav>
 
-      <section className="max-w-4xl mx-auto mt-16 pb-20">
-
+      <section className="max-w-5xl mx-auto px-6 pt-16 pb-10">
         <button
           onClick={() => router.push("/learn/mathematics")}
-          className="text-sm text-[#5F7F91] hover:text-[#202733] transition"
+          className="text-sm text-[#6F7782] hover:text-[#202733] mb-6"
         >
           ← Mathematics
         </button>
 
-        <p className="text-sm text-[#5F7F91] font-medium mt-8 mb-3">
-          Mathematics
-        </p>
-
-        <h1 className="text-4xl font-bold tracking-tight">
-          {data.title}
-        </h1>
-
-        <p className="text-lg text-[#6F7782] mt-4 max-w-2xl leading-relaxed">
+        <h1 className="text-4xl font-bold mb-4">{data.title}</h1>
+        <p className="text-lg text-[#6F7782] max-w-3xl">
           {data.description}
         </p>
+      </section>
 
-        <div className="mt-10 bg-white border border-[#DFE1DE] rounded-xl p-7 shadow-sm">
+      <section className="max-w-5xl mx-auto px-6 py-8">
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-7">
+            <h2 className="text-xl font-semibold mb-5">What to learn</h2>
 
-          <p className="text-sm text-[#5F7F91] font-medium">
-            What to learn
-          </p>
-
-          <h2 className="text-2xl font-bold mt-1">
-            Core concepts
-          </h2>
-
-          <div className="mt-6 space-y-3">
-
-            {data.topics.map((item) => (
-              <div
-                key={item}
-                className="flex items-center gap-3"
-              >
-                <span className="w-2 h-2 rounded-full bg-[#5F7F91]" />
-
-                <p className="text-[#555E69]">
-                  {item}
-                </p>
-              </div>
-            ))}
-
-          </div>
-
-        </div>
-
-        <section className="mt-10">
-
-          <p className="text-sm text-[#5F7F91] font-medium">
-            Where to learn
-          </p>
-
-          <h2 className="text-2xl font-bold mt-1 mb-6">
-            Recommended resources
-          </h2>
-
-          <div className="space-y-4">
-
-            {data.resources.map((resource) => (
-              <a
-                key={resource.name}
-                href={resource.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block bg-white border border-[#DFE1DE] rounded-xl p-6 shadow-sm hover:border-[#C9D4D9] hover:shadow-md transition"
-              >
-
-                <div className="flex items-center justify-between">
-
-                  <h3 className="text-xl font-semibold">
-                    {resource.name}
-                  </h3>
-
-                  <span className="text-[#5F7F91]">
-                    ↗
-                  </span>
-
+            <div className="space-y-3">
+              {data.learn.map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-3 text-[#6F7782]"
+                >
+                  <div className="w-2 h-2 rounded-full bg-[#5F7F91]" />
+                  <span>{item}</span>
                 </div>
-
-                <p className="text-[#6F7782] mt-3 leading-relaxed">
-                  {resource.description}
-                </p>
-
-                <p className="text-sm text-[#5F7F91] mt-4">
-                  Open resource →
-                </p>
-
-              </a>
-            ))}
-
+              ))}
+            </div>
           </div>
 
-        </section>
+          <div className="bg-white border border-[#DFE1DE] rounded-xl p-7">
+            <h2 className="text-xl font-semibold mb-5">Suggested order</h2>
 
-        <div className="mt-8 bg-white border border-[#DFE1DE] rounded-xl p-7 shadow-sm">
+            <div className="space-y-3">
+              {data.order.map((item, index) => (
+                <div key={item} className="flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-full bg-[#E8EFF2] text-[#526C7A] flex items-center justify-center text-sm font-semibold shrink-0">
+                    {index + 1}
+                  </div>
+                  <span className="pt-1">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <p className="text-sm text-[#5F7F91] font-medium">
-            Useful for
-          </p>
+      <section className="max-w-5xl mx-auto px-6 py-8">
+        <h2 className="text-2xl font-bold mb-6">Recommended resources</h2>
 
-          <h2 className="text-2xl font-bold mt-1">
-            What can you use it for?
-          </h2>
+        <div className="grid md:grid-cols-3 gap-5">
+          {data.resources.map((resource) => (
+            <div
+              key={resource.name}
+              className="bg-white border border-[#DFE1DE] rounded-xl p-6"
+            >
+              <h3 className="font-semibold text-lg mb-2">{resource.name}</h3>
+              <p className="text-sm text-[#6F7782] leading-6">
+                {resource.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          <div className="flex flex-wrap gap-2 mt-5">
+      <section className="max-w-5xl mx-auto px-6 py-8 pb-20">
+        <div className="bg-[#202733] rounded-xl p-8 text-white">
+          <h2 className="text-2xl font-bold mb-5">Useful for</h2>
 
+          <div className="flex flex-wrap gap-3">
             {data.usefulFor.map((item) => (
               <span
                 key={item}
-                className="px-3 py-1.5 rounded-lg bg-[#E8EFF2] text-[#526C7A] text-sm"
+                className="bg-white/10 border border-white/10 px-4 py-2 rounded-lg text-sm"
               >
                 {item}
               </span>
             ))}
-
           </div>
-
         </div>
-
-        <div className="mt-8 flex gap-3">
-
-          <button
-            onClick={() => router.push("/learn/mathematics")}
-            className="px-5 py-2.5 rounded-lg border border-[#D9DDDA] text-[#6F7782] hover:bg-white hover:text-[#202733] transition"
-          >
-            Back
-          </button>
-
-          <button
-            onClick={() => router.push("/projects")}
-            className="px-5 py-2.5 rounded-lg bg-[#202733] text-white hover:bg-[#303948] transition"
-          >
-            Explore Projects
-          </button>
-
-        </div>
-
       </section>
-
     </main>
-  );
+  )
 }
