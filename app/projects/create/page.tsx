@@ -1,60 +1,74 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 export default function CreateProjectPage() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [skills, setSkills] = useState("");
-
-  async function handleCreateProject() {
-    if (!title || !description) {
-      alert("Please fill in the project title and description.");
-      return;
-    }
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      alert("You need to be logged in.");
-      return;
-    }
-
-    const { error } = await supabase
-      .from("projects")
-      .insert({
-        owner_id: user.id,
-        title,
-        description,
-        required_skills: skills,
-      });
-
-    if (error) {
-      console.error(error);
-      alert("Could not create project.");
-      return;
-    }
-
-    alert("Project created!");
-    router.push("/projects");
-  }
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
+  const [skills, setSkills] = useState("")
+  const [loading, setLoading] = useState(false)
 
   async function handleLogout() {
-    await supabase.auth.signOut();
-    router.push("/login");
+  await supabase.auth.signOut()
+  router.push("/login")
+}
+
+ async function handleCreateProject() {
+  if (!title.trim() || !description.trim()) {
+    alert("Please fill in the project title and description.")
+    return
   }
+
+  setLoading(true)
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser()
+
+  if (userError || !user) {
+    setLoading(false)
+    alert("You need to be logged in.")
+    return
+  }
+
+  const requiredSkills = skills
+    .split(",")
+    .map((skill) => skill.trim())
+    .filter(Boolean)
+
+  const { error } = await supabase
+    .from("projects")
+    .insert({
+      owner_id: user.id,
+      title: title.trim(),
+      description: description.trim(),
+      required_skills: requiredSkills,
+    })
+
+  if (error) {
+    console.error("Create project error")
+    console.error("message:", error.message)
+    console.error("details:", error.details)
+    console.error("hint:", error.hint)
+    console.error("code:", error.code)
+
+    setLoading(false)
+    alert(error.message || "Could not create project.")
+    return
+  }
+
+  router.push("/projects")
+  router.refresh()
+}
 
   return (
     <main className="min-h-screen bg-[#F5F4F0] text-[#202733] px-6 py-8">
-
       <nav className="max-w-6xl mx-auto flex items-center justify-between">
-
         <button
           onClick={() => router.push("/")}
           className="text-xl font-bold tracking-tight hover:text-[#5F7F91] transition"
@@ -63,7 +77,6 @@ export default function CreateProjectPage() {
         </button>
 
         <div className="flex items-center gap-7">
-
           <button
             onClick={() => router.push("/dashboard")}
             className="text-[#6F7782] hover:text-[#202733] transition"
@@ -98,15 +111,11 @@ export default function CreateProjectPage() {
           >
             Logout
           </button>
-
         </div>
-
       </nav>
 
       <section className="max-w-2xl mx-auto mt-16 pb-20">
-
         <div className="mb-8">
-
           <p className="text-sm text-[#5F7F91] font-medium mb-3">
             Projects
           </p>
@@ -118,13 +127,10 @@ export default function CreateProjectPage() {
           <p className="text-[#6F7782] mt-3 leading-relaxed">
             Share your idea and tell others what you want to build.
           </p>
-
         </div>
 
         <div className="bg-white border border-[#DFE1DE] rounded-2xl p-8 md:p-9 shadow-sm">
-
           <div className="space-y-6">
-
             <div>
               <label className="block text-sm font-medium mb-2">
                 Project Title
@@ -170,12 +176,12 @@ export default function CreateProjectPage() {
             </div>
 
             <div className="flex gap-3 pt-2">
-
               <button
                 onClick={handleCreateProject}
-                className="flex-1 py-3.5 rounded-lg bg-[#202733] text-white font-medium hover:bg-[#303948] transition"
+                disabled={loading}
+                className="flex-1 py-3.5 rounded-lg bg-[#202733] text-white font-medium hover:bg-[#303948] transition disabled:opacity-50"
               >
-                Create Project
+                {loading ? "Creating..." : "Create Project"}
               </button>
 
               <button
@@ -184,15 +190,10 @@ export default function CreateProjectPage() {
               >
                 Cancel
               </button>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
-
     </main>
-  );
+  )
 }
